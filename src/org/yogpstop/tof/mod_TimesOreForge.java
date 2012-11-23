@@ -10,7 +10,6 @@ import net.minecraft.src.WorldGenMinable;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
-import org.yogpstop.tof.BaseModConnecter;
 import org.yogpstop.tof.GenEmerald;
 
 import cpw.mods.fml.common.FMLLog;
@@ -18,7 +17,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "TimesOreForge", name = "TimesOreForge", version = "1.0.1")
+@Mod(modid = "TimesOreForge", name = "TimesOreForge", version = "1.0.2")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class mod_TimesOreForge {
 
@@ -152,6 +151,7 @@ public class mod_TimesOreForge {
 		set(net.minecraft.src.Block.oreDiamond.blockID, 0, DmaxBlocks, 3);
 		set(net.minecraft.src.Block.oreLapis.blockID, 0, LmaxBlocks, 4);
 		set(net.minecraft.src.Block.oreRedstone.blockID, 0, RmaxBlocks, 5);
+		parseSet();
 		GenEmerald.load(EmaxBlocks);
 	}
 	
@@ -165,25 +165,25 @@ public class mod_TimesOreForge {
 		parseGen(world, random, i, j);
 	}
 
-	public static void parseSet() {
+	private void parseSet() {
 		for (int c = 0; c < anyotheroreBlockID.length; c++) {
 			set(anyotheroreBlockID[c], anyotheroreMeta[c],
 					anyotheroreBlocks[c], c + 6);
 		}
 	}
 
-	public static void set(int BlockID, int Meta, int maxBlocks, int count) {
+	private void set(int BlockID, int Meta, int maxBlocks, int count) {
 		WgenM[count] = new WorldGenMinable(BlockID, Meta, maxBlocks);
 	}
 
-	public static void parseGen(World world, Random random, int i, int j) {
+	private static void parseGen(World world, Random random, int i, int j) {
 		for (int c = 0; c < anyotheroreBlockID.length; c++) {
 			generate(world, random, i, j, anyotheroreLumps[c],
 					anyotheroreHeight[c], c + 6);
 		}
 	}
 
-	public static void generate(World world, Random random, int i, int j,
+	private static void generate(World world, Random random, int i, int j,
 			int maxLumps, int maxHeight, int count) {
 		for (int l = 0; l < maxLumps; l++) {
 			int ia = (i - (i % 16)) + random.nextInt(16);
@@ -193,7 +193,7 @@ public class mod_TimesOreForge {
 		}
 	}
 
-	public int[] parseComma(String source) {
+	private int[] parseComma(String source) {
 		String[] scache = source.split(",");
 		int[] cache = new int[scache.length];
 		for (int i = 0; i < scache.length; i++) {

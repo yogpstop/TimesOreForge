@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.src.BiomeGenHills;
 import net.minecraft.src.Block;
-import net.minecraft.src.MLProp;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenMinable;
 
@@ -13,10 +12,8 @@ public class GenEmerald extends BiomeGenHills {
 		super(par1);
 	}
 
-	private static int BlockID = Block.oreEmerald.blockID;
-
 	public static void load(int maxBlocks) {
-		WgenEmerald = new WorldGenMinable(BlockID, maxBlocks);
+		WgenEmerald = new WorldGenMinable(Block.oreEmerald.blockID, maxBlocks);
 	}
 
 	@Override

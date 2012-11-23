@@ -1,0 +1,112 @@
+<project name="Buildcraft" basedir="../" default="main">
+	<!-- Properties -->
+	
+	<property name="mod.name" value="TimesOreForge" />
+	
+	<property name="src.dir" value="${mod.name}/src" />
+	<property name="res.dir" value="${mod.name}/res" />
+	<property name="api.dir" value="api" />
+
+	<property name="build.dir" value="build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${mod.name}/dist" />
+	<property name="mcp.dir" value="${build.dir}/mcp" />
+	<property name="forge.dir" value="${mcp.dir}/forge" />
+	<property name="mcpsrc.dir" value="${mcp.dir}/src/common" />
+
+	<property name="mcp.version" value="723" />
+	<property name="forge.version" value="1.4.5-6.4.0.395" />
+	<property name="mod.version" value="1.0.2" />
+
+	<!-- Targets -->
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- Setup mcp and forge -->
+	<target name="setup">
+
+		<!-- Unzip them -->
+		<unzip dest="${mcp.dir}">
+			<fileset dir="${api.dir}">
+				<include name="mcp${mcp.version}.zip" />
+			</fileset>
+		</unzip>
+
+		<unzip dest="${mcp.dir}">
+			<fileset dir="${api.dir}">
+				<include name="minecraftforge-src-${forge.version}.zip" />
+			</fileset>
+		</unzip>
+
+		<!-- Change executables' permitions -->
+		<chmod file="${mcp.dir}/updatemd5.sh" perm="+x" />
+		<chmod file="${mcp.dir}/recompile.sh" perm="+x" />
+		<chmod file="${mcp.dir}/reobfuscate.sh" perm="+x" />
+		<chmod file="${forge.dir}/install.sh" perm="+x" />
+
+		<!-- if your building on OSX these 2 should be executable -->
+		<chmod file="${mcp.dir}/runtime/bin/astyle-osx" perm="+x" />
+		<chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
+
+		<!-- Install forge -->
+		<exec dir="${forge.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c install.cmd" />
+		</exec>
+
+		<exec dir="${forge.dir}" executable="sh" osfamily="unix">
+			<arg value="install.sh" />
+		</exec>
+
+		<!-- Copy mod source -->
+		<copy todir="${mcpsrc.dir}">
+			<fileset dir="${src.dir}">
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="compile" depends="setup">
+
+		<!-- Recompile -->
+		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c recompile.bat" />
+		</exec>
+
+		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+			<arg value="recompile.sh" />
+		</exec>
+
+		<!-- Reobf -->
+		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c reobfuscate.bat" />
+		</exec>
+
+		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+			<arg value="reobfuscate.sh" />
+		</exec>
+
+		<!-- Copy mod classes -->
+		<copy todir="${classes.dir}">
+			<fileset dir="${mcp.dir}/reobf/minecraft" />
+		</copy>
+
+		<copy todir="${classes.dir}">
+			<fileset dir="${res.dir}" />
+		</copy>
+
+	</target>
+
+	<!-- Zip the compiled files -->
+	<target name="package" depends="compile">
+
+		<jar destfile="${jar.dir}/${mod.name}-${mod.version}.jar" basedir="${classes.dir}" />
+		<delete dir="${build.dir}" />
+
+	</target>
+
+	<!-- Default target to run -->
+	<target name="main" depends="clean,setup,package" />
+
+</project>
