@@ -5,11 +5,11 @@ import java.util.Random;
 import net.minecraft.src.BaseMod;
 import net.minecraft.src.World;
 
-public class BaseModConnecter extends BaseMod {
+public class mod_BaseModConnecter extends BaseMod {
 
 	@Override
 	public String getVersion() {
-		return "0";
+		return "VERSION";
 	}
 
 	@Override

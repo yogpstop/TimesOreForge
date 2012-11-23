@@ -1,7 +1,5 @@
 package org.yogpstop.tof;
 
-
-
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -10,16 +8,18 @@ import net.minecraft.src.WorldGenMinable;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
-import org.yogpstop.tof.GenEmerald;
+import org.yogpstop.tof.BiomeGenHillsConnecter;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "TimesOreForge", name = "TimesOreForge", version = "1.0.2")
+@Mod(modid = "TimesOreForge", name = "TimesOreForge", version = "@VERSION@")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class mod_TimesOreForge {
+	public static WorldGenMinable[] WgenM;
 
 	public static int RmaxLumps;
 	public static int RmaxHeight;
@@ -55,52 +55,56 @@ public class mod_TimesOreForge {
 	public static int[] anyotheroreBlockID = new int[1];
 	public static int[] anyotheroreMeta;
 
+	public static BiomeGenHillsConnecter bghc;
+
 	@Mod.PreInit
 	public void preload(FMLPreInitializationEvent event) {
+		bghc = new BiomeGenHillsConnecter(0);
 		Configuration conf = new Configuration(
 				event.getSuggestedConfigurationFile());
 		try {
 			conf.load();
 
-			Property RL = conf.get("RedStone", "maxLumpsPerChunk", 0);
-			Property RH = conf.get("RedStone", "maxHeight", 16);
-			Property RB = conf.get("RedStone", "maxBlocksPerLump", 14);
-			Property LL = conf.get("LapisLazuli", "maxLumpsPerChunk", 0);
-			Property LH = conf.get("LapisLazuli", "maxHeight", 32);
-			Property LB = conf.get("LapisLazuli", "maxBlocksPerLump", 8);
-			Property IL = conf.get("Iron", "maxLumpsPerChunk", 0);
-			Property IH = conf.get("Iron", "maxHeight", 67);
-			Property IB = conf.get("Iron", "maxBlocksPerLump", 9);
-			Property GL = conf.get("Gold", "maxLumpsPerChunk", 0);
-			Property GH = conf.get("Gold", "maxHeight", 30);
-			Property GB = conf.get("Gold", "maxBlocksPerLump", 8);
-			Property DL = conf.get("Diamond", "maxLumpsPerChunk", 0);
-			Property DH = conf.get("Diamond", "maxHeight", 15);
-			Property DB = conf.get("Diamond", "maxBlocksPerLump", 10);
-			Property CL = conf.get("Coal", "maxLumpsPerChunk", 0);
-			Property CH = conf.get("Coal", "maxHeight", 255);
-			Property CB = conf.get("Coal", "maxBlocksPerLump", 50);
-			Property EL = conf.get("Emerald", "maxLumpsPerChunk", 0);
-			Property EH = conf.get("Emerald", "maxHeight", 31);
-			Property EB = conf.get("Emerald", "maxBlocksPerLump", 1);
-			Property OL = conf.get("other", "maxLumpsPerChunk", "0");
-			Property OH = conf.get("other", "maxHeight", "0");
-			Property OB = conf.get("other", "maxBlocksPerLump", "0");
-			Property OI = conf.get("other", "ListOfBlockID", "0");
-			Property OM = conf.get("other", "ListOfMetaData", "0");
+			Property RL = conf.get("6RedStone", "maxLumpsPerChunk", 0);
+			Property RH = conf.get("6RedStone", "maxHeight", 16);
+			Property RB = conf.get("6RedStone", "maxBlocksPerLump", 14);
+			Property LL = conf.get("7LapisLazuli", "maxLumpsPerChunk", 0);
+			Property LH = conf.get("7LapisLazuli", "maxHeight", 32);
+			Property LB = conf.get("7LapisLazuli", "maxBlocksPerLump", 8);
+			Property IL = conf.get("2Iron", "maxLumpsPerChunk", 0);
+			Property IH = conf.get("2Iron", "maxHeight", 67);
+			Property IB = conf.get("2Iron", "maxBlocksPerLump", 9);
+			Property GL = conf.get("3Gold", "maxLumpsPerChunk", 0);
+			Property GH = conf.get("3Gold", "maxHeight", 30);
+			Property GB = conf.get("3Gold", "maxBlocksPerLump", 8);
+			Property DL = conf.get("4Diamond", "maxLumpsPerChunk", 0);
+			Property DH = conf.get("4Diamond", "maxHeight", 15);
+			Property DB = conf.get("4Diamond", "maxBlocksPerLump", 10);
+			Property CL = conf.get("1Coal", "maxLumpsPerChunk", 0);
+			Property CH = conf.get("1Coal", "maxHeight", 255);
+			Property CB = conf.get("1Coal", "maxBlocksPerLump", 50);
+			Property EL = conf.get("5Emerald", "maxLumpsPerChunk", 0);
+			Property EH = conf.get("5Emerald", "maxHeight", 31);
+			Property EB = conf.get("5Emerald", "maxBlocksPerLump", 1);
+			Property OL = conf.get("8other", "maxLumpsPerChunk", "0");
+			Property OH = conf.get("8other", "maxHeight", "0");
+			Property OB = conf.get("8other", "maxBlocksPerLump", "0");
+			Property OI = conf.get("8other", "ListOfBlockID", "0");
+			Property OM = conf.get("8other", "ListOfMetaData", "0");
 
-			RL.comment = "How many lumps is there generated in a chunk?";
-			RH.comment = "What position of Y axis is ores generated when the highest?";
-			RB.comment = "How many ores is there generated in a lump?";
+			CL.comment = "How many lumps is there generated in a chunk?";
+			CH.comment = "What position of Y axis is ores generated when the highest?";
+			CB.comment = "How many ores is there generated in a lump?";
 			OI.comment = "Enter any other ores's ItemID separated by comma.";
 			OM.comment = "Enter any other ores's MetaData (like number after semicolon) separated by comma.";
 
-			conf.addCustomCategoryComment("RedStone",
+			conf.addCustomCategoryComment("1Coal",
 					"Author write how to configure in here. Other ores is same too.");
-			conf.addCustomCategoryComment("other",
+			conf.addCustomCategoryComment(
+					"8other",
 					"This category is special. How to configure is written in readme. All value must be separated by comma.");
 
-			RmaxLumps = RB.getInt(0);
+			RmaxLumps = RL.getInt(0);
 			RmaxHeight = RH.getInt(16);
 			RmaxBlocks = RB.getInt(14);
 			LmaxLumps = LL.getInt(0);
@@ -143,7 +147,7 @@ public class mod_TimesOreForge {
 	}
 
 	@Mod.Init
-	public void load() {
+	public void load(FMLInitializationEvent event) {
 		WgenM = new WorldGenMinable[anyotheroreBlockID.length + 6];
 		set(net.minecraft.src.Block.oreCoal.blockID, 0, CmaxBlocks, 0);
 		set(net.minecraft.src.Block.oreIron.blockID, 0, ImaxBlocks, 1);
@@ -152,9 +156,9 @@ public class mod_TimesOreForge {
 		set(net.minecraft.src.Block.oreLapis.blockID, 0, LmaxBlocks, 4);
 		set(net.minecraft.src.Block.oreRedstone.blockID, 0, RmaxBlocks, 5);
 		parseSet();
-		GenEmerald.load(EmaxBlocks);
+		BiomeGenHillsConnecter.load(EmaxBlocks);
 	}
-	
+
 	public static void make(World world, Random random, int i, int j) {
 		generate(world, random, i, j, CmaxLumps, CmaxHeight, 0);
 		generate(world, random, i, j, ImaxLumps, ImaxHeight, 1);
@@ -202,7 +206,5 @@ public class mod_TimesOreForge {
 		}
 		return cache;
 	}
-
-	static WorldGenMinable[] WgenM;
 
 }

@@ -7,8 +7,8 @@ import net.minecraft.src.Block;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenMinable;
 
-public class GenEmerald extends BiomeGenHills {
-	protected GenEmerald(int par1) {
+public class BiomeGenHillsConnecter extends BiomeGenHills {
+	protected BiomeGenHillsConnecter(int par1) {
 		super(par1);
 	}
 
