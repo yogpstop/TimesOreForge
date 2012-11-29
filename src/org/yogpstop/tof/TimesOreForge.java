@@ -3,6 +3,7 @@ package org.yogpstop.tof;
 import java.util.Random;
 import java.util.logging.Level;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldGenMinable;
@@ -21,50 +22,20 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(modid = "TimesOreForge", name = "TimesOreForge", version = "@VERSION@")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class TimesOreForge implements IWorldGenerator {
-	public static WorldGenMinable[] WgenM;
+	public int EmaxLumps;
+	public int EmaxHeight;
+	public int EmaxBlocks;
+	public boolean ELikeLapis;
+	public boolean ELikeDefault;
+	public WorldGenMinable WgenE;
 
-	public static int RmaxLumps;
-	public static int RmaxHeight;
-	public static int RmaxBlocks;
-	public static boolean RLikeLapis;
-
-	public static int LmaxLumps;
-	public static int LmaxHeight;
-	public static int LmaxBlocks;
-	public static boolean LLikeLapis;
-
-	public static int ImaxLumps;
-	public static int ImaxHeight;
-	public static int ImaxBlocks;
-	public static boolean ILikeLapis;
-
-	public static int GmaxLumps;
-	public static int GmaxHeight;
-	public static int GmaxBlocks;
-	public static boolean GLikeLapis;
-
-	public static int DmaxLumps;
-	public static int DmaxHeight;
-	public static int DmaxBlocks;
-	public static boolean DLikeLapis;
-
-	public static int CmaxLumps;
-	public static int CmaxHeight;
-	public static int CmaxBlocks;
-	public static boolean CLikeLapis;
-
-	public static int EmaxLumps;
-	public static int EmaxHeight;
-	public static int EmaxBlocks;
-	public static boolean ELikeLapis;
-	public static boolean ELikeDefault;
-
-	public static int[] anyotheroreLumps;
-	public static int[] anyotheroreHeight;
-	public static int[] anyotheroreBlocks;
-	public static int[] anyotheroreBlockID = new int[1];
-	public static int[] anyotheroreMeta;
-	public static boolean[] anyotheroreLikeLapis;
+	public int[] Lumps;
+	public int[] Height;
+	public int[] Blocks;
+	public int[] BlockID;
+	public int[] Meta;
+	public boolean[] LikeLapis;
+	public WorldGenMinable[] WgenM;
 
 	@Mod.PreInit
 	public void preload(FMLPreInitializationEvent event) {
@@ -78,43 +49,10 @@ public class TimesOreForge implements IWorldGenerator {
 			Property CB = conf.get("1Coal", "maxBlocksPerLump", 16);
 			Property C2 = conf.get("1Coal", "LikeLapisGenerate", false);
 
-			Property IL = conf.get("2Iron", "maxLumpsPerChunk", 20);
-			Property IH = conf.get("2Iron", "maxHeight", 64);
-			Property IB = conf.get("2Iron", "maxBlocksPerLump", 8);
-			Property I2 = conf.get("2Iron", "LikeLapisGenerate", false);
-
-			Property GL = conf.get("3Gold", "maxLumpsPerChunk", 2);
-			Property GH = conf.get("3Gold", "maxHeight", 32);
-			Property GB = conf.get("3Gold", "maxBlocksPerLump", 8);
-			Property G2 = conf.get("3Gold", "LikeLapisGenerate", false);
-
-			Property DL = conf.get("4Diamond", "maxLumpsPerChunk", 1);
-			Property DH = conf.get("4Diamond", "maxHeight", 16);
-			Property DB = conf.get("4Diamond", "maxBlocksPerLump", 7);
-			Property D2 = conf.get("4Diamond", "LikeLapisGenerate", false);
-
-			Property EL = conf.get("5Emerald", "maxLumpsPerChunk", 6);
-			Property EH = conf.get("5Emerald", "maxHeight", 32);
-			Property EB = conf.get("5Emerald", "maxBlocksPerLump", 1);
-			Property E2 = conf.get("5Emerald", "LikeLapisGenerate", false);
 			Property ED = conf.get("5Emerald", "LikeDefaultOre", false);
 
-			Property RL = conf.get("6RedStone", "maxLumpsPerChunk", 8);
-			Property RH = conf.get("6RedStone", "maxHeight", 16);
-			Property RB = conf.get("6RedStone", "maxBlocksPerLump", 7);
-			Property R2 = conf.get("6Redstone", "LikeLapisGenerate", false);
-
-			Property LL = conf.get("7LapisLazuli", "maxLumpsPerChunk", 1);
-			Property LH = conf.get("7LapisLazuli", "maxHeight", 32);
-			Property LB = conf.get("7LapisLazuli", "maxBlocksPerLump", 6);
-			Property L2 = conf.get("7LapisLazuli", "LikeLapisGenerate", true);
-
-			Property OL = conf.get("8other", "maxLumpsPerChunk", "0");
-			Property OH = conf.get("8other", "maxHeight", "0");
-			Property OB = conf.get("8other", "maxBlocksPerLump", "0");
 			Property OI = conf.get("8other", "ListOfBlockID", "0");
 			Property OM = conf.get("8other", "ListOfMetaData", "0");
-			Property O2 = conf.get("8other", "LikeLapisGenerate", "false");
 
 			CL.comment = "How many lumps is there generated in a chunk?";
 			CH.comment = "What position of Y axis is ores generated when the highest?";
@@ -130,55 +68,61 @@ public class TimesOreForge implements IWorldGenerator {
 					"8other",
 					"This category is special. How to configure is written in readme. All value must be separated by comma.");
 
-			CmaxLumps = CL.getInt(20);
-			CmaxHeight = CH.getInt(128);
-			CmaxBlocks = CB.getInt(16);
-			CLikeLapis = C2.getBoolean(false);
-			ImaxLumps = IL.getInt(20);
-			ImaxHeight = IH.getInt(64);
-			ImaxBlocks = IB.getInt(8);
-			ILikeLapis = I2.getBoolean(false);
-			GmaxLumps = GL.getInt(2);
-			GmaxHeight = GH.getInt(32);
-			GmaxBlocks = GB.getInt(8);
-			GLikeLapis = G2.getBoolean(false);
-			DmaxLumps = DL.getInt(1);
-			DmaxHeight = DH.getInt(16);
-			DmaxBlocks = DB.getInt(7);
-			DLikeLapis = D2.getBoolean(false);
-			EmaxLumps = EL.getInt(6);
-			EmaxHeight = EH.getInt(32);
-			EmaxBlocks = EB.getInt(1);
-			ELikeLapis = E2.getBoolean(false);
+			parseComma(conf.get("8other", "maxLumpsPerChunk", "0").value,
+					conf.get("8other", "maxHeight", "0").value,
+					conf.get("8other", "maxBlocksPerLump", "0").value,
+					conf.get("8other", "LikeLapisGenerate", "false").value,
+					OI.value, OM.value);
+
+			Lumps[0] = CL.getInt(20);
+			Height[0] = CH.getInt(128);
+			Blocks[0] = CB.getInt(16);
+			BlockID[0] = Block.oreCoal.blockID;
+			LikeLapis[0] = C2.getBoolean(false);
+
+			Lumps[1] = conf.get("2Iron", "maxLumpsPerChunk", 20).getInt(20);
+			Height[1] = conf.get("2Iron", "maxHeight", 64).getInt(64);
+			Blocks[1] = conf.get("2Iron", "maxBlocksPerLump", 8).getInt(8);
+			BlockID[1] = Block.oreIron.blockID;
+			LikeLapis[1] = conf.get("2Iron", "LikeLapisGenerate", false)
+					.getBoolean(false);
+
+			Lumps[2] = conf.get("3Gold", "maxLumpsPerChunk", 2).getInt(2);
+			Height[2] = conf.get("3Gold", "maxHeight", 32).getInt(32);
+			Blocks[2] = conf.get("3Gold", "maxBlocksPerLump", 8).getInt(8);
+			BlockID[2] = Block.oreGold.blockID;
+			LikeLapis[2] = conf.get("3Gold", "LikeLapisGenerate", false)
+					.getBoolean(false);
+
+			Lumps[3] = conf.get("4Diamond", "maxLumpsPerChunk", 1).getInt(1);
+			Height[3] = conf.get("4Diamond", "maxHeight", 16).getInt(16);
+			Blocks[3] = conf.get("4Diamond", "maxBlocksPerLump", 7).getInt(7);
+			BlockID[3] = Block.oreDiamond.blockID;
+			LikeLapis[3] = conf.get("4Diamond", "LikeLapisGenerate", false)
+					.getBoolean(false);
+
+			Lumps[4] = conf.get("7LapisLazuli", "maxLumpsPerChunk", 1)
+					.getInt(1);
+			Height[4] = conf.get("7LapisLazuli", "maxHeight", 32).getInt(32);
+			Blocks[4] = conf.get("7LapisLazuli", "maxBlocksPerLump", 6).getInt(
+					6);
+			BlockID[4] = Block.oreLapis.blockID;
+			LikeLapis[4] = conf.get("7LapisLazuli", "LikeLapisGenerate", true)
+					.getBoolean(true);
+
+			Lumps[5] = conf.get("6RedStone", "maxLumpsPerChunk", 8).getInt(8);
+			Height[5] = conf.get("6RedStone", "maxHeight", 16).getInt(16);
+			Blocks[5] = conf.get("6RedStone", "maxBlocksPerLump", 7).getInt(7);
+			BlockID[5] = Block.oreRedstone.blockID;
+			LikeLapis[5] = conf.get("6Redstone", "LikeLapisGenerate", false)
+					.getBoolean(false);
+
+			EmaxLumps = conf.get("5Emerald", "maxLumpsPerChunk", 6).getInt(6);
+			EmaxHeight = conf.get("5Emerald", "maxHeight", 32).getInt(32);
+			EmaxBlocks = conf.get("5Emerald", "maxBlocksPerLump", 1).getInt(1);
+			ELikeLapis = conf.get("5Emerald", "LikeLapisGenerate", false)
+					.getBoolean(false);
 			ELikeDefault = ED.getBoolean(false);
-			RmaxLumps = RL.getInt(8);
-			RmaxHeight = RH.getInt(16);
-			RmaxBlocks = RB.getInt(7);
-			RLikeLapis = R2.getBoolean(false);
-			LmaxLumps = LL.getInt(1);
-			LmaxHeight = LH.getInt(32);
-			LmaxBlocks = LB.getInt(6);
-			LLikeLapis = L2.getBoolean(true);
-			anyotheroreLumps = parseComma(OL.value);
-			anyotheroreHeight = parseComma(OH.value);
-			anyotheroreBlocks = parseComma(OB.value);
-			anyotheroreBlockID = parseComma(OI.value);
-			anyotheroreMeta = parseComma(OM.value);
-			anyotheroreLikeLapis = parseCommaBool(O2.value);
-			if (anyotheroreHeight.length != anyotheroreBlockID.length
-					|| anyotheroreBlocks.length != anyotheroreBlockID.length
-					|| anyotheroreMeta.length != anyotheroreBlockID.length
-					|| anyotheroreLumps.length != anyotheroreBlockID.length
-					|| anyotheroreLikeLapis.length != anyotheroreBlockID.length) {
-				FMLLog.log(Level.SEVERE, "Config file is wrongly!");
-				anyotheroreLumps = new int[1];
-				anyotheroreHeight = new int[1];
-				anyotheroreBlocks = new int[1];
-				anyotheroreBlockID = new int[1];
-				anyotheroreMeta = new int[1];
-				anyotheroreLikeLapis = new boolean[1];
-				anyotheroreLikeLapis[0] = false;
-			}
 		} finally {
 			conf.save();
 		}
@@ -187,105 +131,123 @@ public class TimesOreForge implements IWorldGenerator {
 
 	@Mod.Init
 	public void load(FMLInitializationEvent event) {
-		WgenM = new WorldGenMinable[anyotheroreBlockID.length + 7];
-		set(net.minecraft.src.Block.oreCoal.blockID, 0, CmaxBlocks, 0);
-		set(net.minecraft.src.Block.oreIron.blockID, 0, ImaxBlocks, 1);
-		set(net.minecraft.src.Block.oreGold.blockID, 0, GmaxBlocks, 2);
-		set(net.minecraft.src.Block.oreDiamond.blockID, 0, DmaxBlocks, 3);
-		set(net.minecraft.src.Block.oreLapis.blockID, 0, LmaxBlocks, 4);
-		set(net.minecraft.src.Block.oreRedstone.blockID, 0, RmaxBlocks, 5);
-		set(net.minecraft.src.Block.oreEmerald.blockID, 0, EmaxBlocks, 6);
+		WgenM = new WorldGenMinable[BlockID.length];
+		WgenE = new WorldGenMinable(Block.oreEmerald.blockID, 0, EmaxBlocks);
 		parseSet();
 	}
 
 	private void parseSet() {
-		for (int c = 0; c < anyotheroreBlockID.length; c++) {
-			set(anyotheroreBlockID[c], anyotheroreMeta[c],
-					anyotheroreBlocks[c], c + 7);
+		for (int c = 0; c < BlockID.length; c++) {
+			WgenM[c] = new WorldGenMinable(BlockID[c], Meta[c], Blocks[c]);
 		}
 	}
 
-	private void set(int BlockID, int Meta, int maxBlocks, int count) {
-		WgenM[count] = new WorldGenMinable(BlockID, Meta, maxBlocks);
-	}
-
-	private static void parseGen(World world, Random random, int i, int j) {
-		for (int c = 0; c < anyotheroreBlockID.length; c++) {
-			generateMinable(world, random, i, j, anyotheroreLumps[c],
-					anyotheroreHeight[c], c + 7, anyotheroreLikeLapis[c]);
+	private void parseGen(World world, Random random, int x, int z) {
+		for (int c = 0; c < BlockID.length; c++) {
+			genM(world, random, x, z, c);
 		}
 	}
 
-	private static void generateMinable(World world, Random random, int i,
-			int j, int maxLumps, int maxHeight, int count, boolean twocount) {
-		for (int l = 0; l < maxLumps; l++) {
-			int ia = i * 16 + random.nextInt(16);
-			int ja;
-			if (twocount) {
+	private void genM(World world, Random random, int x, int z, int c) {
+		for (int l = 0; l < Lumps[c]; l++) {
+			int xa = x * 16 + random.nextInt(16);
+			int ya;
+			if (LikeLapis[c]) {
 				int cache;
-				if ((maxHeight % 2) == 1) {
-					cache = (maxHeight - 1) / 2;
+				if ((Height[c] % 2) == 1) {
+					cache = (Height[c] - 1) / 2;
 				} else {
-					cache = maxHeight / 2;
+					cache = Height[c] / 2;
 				}
-				ja = random.nextInt(cache) + random.nextInt(cache);
+				ya = random.nextInt(cache) + random.nextInt(cache);
 			} else {
-				ja = random.nextInt(maxHeight);
+				ya = random.nextInt(Height[c]);
 			}
-			int ka = j * 16 + random.nextInt(16);
-			WgenM[count].generate(world, random, ia, ja, ka);
+			int za = z * 16 + random.nextInt(16);
+			WgenM[c].generate(world, random, xa, ya, za);
 		}
 	}
 
-	private int[] parseComma(String source) {
-		String[] scache = source.split(",");
-		int[] cache = new int[scache.length];
-		for (int i = 0; i < scache.length; i++) {
-			scache[i] = scache[i].replaceAll(" ", "");
-			cache[i] = Integer.parseInt(scache[i]);
+	private void generateEmerald(World world, Random random, int x, int z) {
+		for (int l = 0; l < EmaxLumps; l++) {
+			int xa = x * 16 + random.nextInt(16);
+			int ya;
+			if (ELikeLapis) {
+				int cache;
+				if ((EmaxHeight % 2) == 1) {
+					cache = (EmaxHeight - 1) / 2;
+				} else {
+					cache = EmaxHeight / 2;
+				}
+				ya = random.nextInt(cache) + random.nextInt(cache);
+			} else {
+				ya = random.nextInt(EmaxHeight);
+			}
+			int za = z * 16 + random.nextInt(16);
+			WgenE.generate(world, random, xa, ya, za);
 		}
-		return cache;
 	}
 
-	private boolean[] parseCommaBool(String source) {
-		String[] scache = source.split(",");
-		boolean[] cache = new boolean[scache.length];
-		for (int i = 0; i < scache.length; i++) {
-			scache[i] = scache[i].replaceAll(" ", "");
-			cache[i] = Boolean.getBoolean(scache[i]);
+	private void parseComma(String lumps, String height, String blocks,
+			String likelapis, String blockid, String metadata) {
+		String[] cLumps = lumps.split(",");
+		String[] cHeight = height.split(",");
+		String[] cBlocks = blocks.split(",");
+		String[] cLikeLapis = likelapis.split(",");
+		String[] cBlockID = blockid.split(",");
+		String[] cMetadata = metadata.split(",");
+		if ((cLumps.length != cHeight.length || cLumps.length != cBlocks.length
+				|| cLumps.length != cLikeLapis.length
+				|| cLumps.length != cBlockID.length || cLumps.length != cMetadata.length)
+				|| (cLumps.length == 1 && cLumps[0] == "0")) {
+			FMLLog.log(Level.WARNING,
+					"[TimesOreForge]Setting file is wrong or not generate other ores!");
+			Lumps = new int[6];
+			Height = new int[6];
+			Blocks = new int[6];
+			LikeLapis = new boolean[6];
+			BlockID = new int[6];
+			Meta = new int[6];
+			return;
 		}
-		return cache;
+		Lumps = new int[6 + cLumps.length];
+		Height = new int[6 + cLumps.length];
+		Blocks = new int[6 + cLumps.length];
+		LikeLapis = new boolean[6 + cLumps.length];
+		BlockID = new int[6 + cLumps.length];
+		Meta = new int[6 + cLumps.length];
+		for (int i = 0; i < cLumps.length; i++) {
+			cLumps[i] = cLumps[i].replaceAll(" ", "");
+			cHeight[i] = cHeight[i].replaceAll(" ", "");
+			cBlocks[i] = cBlocks[i].replaceAll(" ", "");
+			cLikeLapis[i] = cLikeLapis[i].replaceAll(" ", "");
+			cBlockID[i] = cBlockID[i].replaceAll(" ", "");
+			cMetadata[i] = cMetadata[i].replaceAll(" ", "");
+			Lumps[i + 6] = Integer.parseInt(cLumps[i]);
+			Height[i + 6] = Integer.parseInt(cHeight[i]);
+			Blocks[i + 6] = Integer.parseInt(cBlocks[i]);
+			BlockID[i + 6] = Integer.parseInt(cBlockID[i]);
+			Meta[i + 6] = Integer.parseInt(cMetadata[i]);
+			LikeLapis[i + 6] = Boolean.valueOf(cLikeLapis[i]);
+		}
+		return;
 	}
 
 	@Override
-	public void generate(Random random, int i, int j, World world,
+	public void generate(Random random, int x, int z, World world,
 			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		generateMinable(world, random, i, j, CmaxLumps, CmaxHeight, 0,
-				CLikeLapis);
-		generateMinable(world, random, i, j, ImaxLumps, ImaxHeight, 1,
-				ILikeLapis);
-		generateMinable(world, random, i, j, GmaxLumps, GmaxHeight, 2,
-				GLikeLapis);
-		generateMinable(world, random, i, j, DmaxLumps, DmaxHeight, 3,
-				DLikeLapis);
-		generateMinable(world, random, i, j, LmaxLumps, LmaxHeight, 4,
-				LLikeLapis);
-		generateMinable(world, random, i, j, RmaxLumps, RmaxHeight, 5,
-				RLikeLapis);
-		parseGen(world, random, i, j);
+		parseGen(world, random, x, z);
+
 		if (ELikeDefault) {
-			generateMinable(world, random, i, j, EmaxLumps, EmaxHeight, 6,
-					ELikeLapis);
+			generateEmerald(world, random, x, z);
 		} else {
 			String biomename = world.getWorldChunkManager().getBiomeGenAt(
-					i * 16 + 16, j * 16 + 16).biomeName;
+					x * 16 + 8, z * 16 + 8).biomeName;
 			if (biomename == null) {
 				FMLLog.log(Level.WARNING, "BiomeName is null!");
 			} else {
-				if (biomename.contains("Extreme Hills")
-						|| biomename.contains("Extreme Hills Edge")) {
-					generateMinable(world, random, i, j, EmaxLumps, EmaxHeight,
-							6, ELikeLapis);
+				if (biomename.contains("Hills")) {
+					generateEmerald(world, random, x, z);
 				}
 			}
 		}
