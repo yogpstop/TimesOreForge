@@ -97,20 +97,6 @@ public class TimesOreForge implements IWorldGenerator {
 			}
 			br.close();
 		} catch (IOException e) {
-			setting = new ArrayList<SettingObject>(9);
-			for (int i = 0; i < 9; i++) {
-				setting.add(new SettingObject(DBlockID[i], 0));
-				TimesOreForge.setting.get(i).Height = TimesOreForge.DHeight
-						.get(DBlockID[i]);
-				TimesOreForge.setting.get(i).Blocks = TimesOreForge.DBlocks
-						.get(DBlockID[i]);
-				TimesOreForge.setting.get(i).Lumps = TimesOreForge.DLumps
-						.get(DBlockID[i]);
-				TimesOreForge.setting.get(i).LikeLapis = (TimesOreForge.setting
-						.get(i).BlockID == Block.oreLapis.blockID ? true
-						: false);
-				TimesOreForge.setting.get(i).BaseBlock = DBlockID[i];
-			}
 			save();
 		}
 		LanguageRegistry.instance().loadLocalization(

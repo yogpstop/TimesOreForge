@@ -3,13 +3,13 @@ package org.yogpstop.tof;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
-import net.minecraft.src.ItemStack;
 import net.minecraft.src.StatCollector;
 
 public class GuiSetting extends GuiScreen {
 	public GuiScreen parent;
 	public GuiSlotOres oreslot;
 	public GuiButton delete;
+	public GuiButton setting;
 
 	public GuiSetting(GuiScreen parentA) {
 		super();
@@ -22,8 +22,8 @@ public class GuiSetting extends GuiScreen {
 		controlList.add(new GuiButton(-1, this.width / 2 - 125,
 				this.height - 26, 250, 20, StatCollector
 						.translateToLocal("gui.done")));
-		controlList.add(new GuiButton(0, this.width * 2 / 3 + 10, 20, 100, 20,
-				StatCollector.translateToLocal("menu.options")));
+		controlList.add(setting = new GuiButton(0, this.width * 2 / 3 + 10, 20,
+				100, 20, StatCollector.translateToLocal("menu.options")));
 		controlList
 				.add(new GuiButton(1, this.width * 2 / 3 + 10, 50, 100, 20,
 						StatCollector.translateToLocal("tof.addnewore")
@@ -76,15 +76,6 @@ public class GuiSetting extends GuiScreen {
 		}
 	}
 
-	public void deletetoggle() {
-		if (TimesOreForge.DLumps.containsKey(TimesOreForge.setting
-				.get(oreslot.currentore).BlockID)) {
-			delete.enabled = false;
-		} else {
-			delete.enabled = true;
-		}
-	}
-
 	@Override
 	public void drawScreen(int i, int j, float k) {
 		drawDefaultBackground();
@@ -93,8 +84,11 @@ public class GuiSetting extends GuiScreen {
 		fontRenderer.drawStringWithShadow(title,
 				(this.width - fontRenderer.getStringWidth(title)) / 2, 8,
 				0xFFFFFF);
+		if (TimesOreForge.setting.size() == 0) {
+			setting.enabled = false;
+			delete.enabled = false;
+		}
 		super.drawScreen(i, j, k);
-		deletetoggle();
 	}
 
 	@Override

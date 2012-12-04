@@ -12,7 +12,7 @@ public class SettingObject {
 	public int Meta;
 	public boolean LikeLapis;
 	public boolean AllBiome = true;
-	public int isSetMultiple;
+	public int isSetMultiple = 1;
 	public int BaseBlock = net.minecraft.src.Block.oreCoal.blockID;
 	public ArrayList<Integer> Biome;
 
@@ -20,6 +20,11 @@ public class SettingObject {
 		Biome = new ArrayList<Integer>();
 		BlockID = ABlockID;
 		Meta = AMeta;
+		if (TimesOreForge.DLumps.containsKey(BlockID)) {
+			Height = TimesOreForge.DHeight.get(BlockID);
+			Blocks = TimesOreForge.DBlocks.get(BlockID);
+			BaseBlock = BlockID;
+		}
 	}
 
 	public SettingObject(String Line) {

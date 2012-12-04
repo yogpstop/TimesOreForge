@@ -32,12 +32,18 @@ public class GuiSlotBlockList extends GuiSlot {
 			}
 		}
 		for (int i = 0; i < blocklist.size(); i++) {
+			if (blocklist.get(i).itemID == Block.stone.blockID) {
+				blocklist.remove(i);
+				i--;
+				continue;
+			}
 			for (int j = 0; j < TimesOreForge.setting.size(); j++) {
 				if (blocklist.get(i).itemID == TimesOreForge.setting.get(j).BlockID
 						&& blocklist.get(i).getItemDamage() == TimesOreForge.setting
 								.get(j).Meta) {
 					blocklist.remove(i);
 					i--;
+					continue;
 				}
 			}
 		}

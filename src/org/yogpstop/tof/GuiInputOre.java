@@ -1,6 +1,7 @@
 package org.yogpstop.tof;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.Block;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiTextField;
@@ -59,6 +60,13 @@ public class GuiInputOre extends GuiScreen {
 									TimesOreForge.getname(bid, metaid)));
 					return;
 				}
+			}
+			if (bid == Block.stone.blockID) {
+				Minecraft.getMinecraft().displayGuiScreen(
+						new GuiError(this, StatCollector
+								.translateToLocal("tof.alreadyerror"),
+								TimesOreForge.getname(bid, metaid)));
+				return;
 			}
 			Minecraft.getMinecraft().displayGuiScreen(
 					new GuiYesNoOnAdd(parent, StatCollector

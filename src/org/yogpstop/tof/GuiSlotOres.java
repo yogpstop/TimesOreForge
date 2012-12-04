@@ -2,8 +2,6 @@ package org.yogpstop.tof;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiSlot;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.StatCollector;
 import net.minecraft.src.Tessellator;
 
 public class GuiSlotOres extends GuiSlot {
@@ -25,7 +23,6 @@ public class GuiSlotOres extends GuiSlot {
 	@Override
 	protected void elementClicked(int var1, boolean var2) {
 		currentore = var1;
-		parent.deletetoggle();
 	}
 
 	@Override

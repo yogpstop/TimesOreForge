@@ -65,6 +65,19 @@ public class GuiOre extends GuiScreen {
 				* TimesOreForge.setting.get(ore).Blocks;
 		float density = (float) blocks
 				/ (float) TimesOreForge.setting.get(ore).Height;
+		int dblocksa = 0;
+		float ddensitya = 0;
+		if (TimesOreForge.DLumps
+				.containsKey(TimesOreForge.setting.get(ore).BlockID)
+				&& TimesOreForge.setting.get(ore).Meta == 0) {
+			dblocksa = TimesOreForge.DBlocks
+					.get(TimesOreForge.setting.get(ore).BlockID)
+					* TimesOreForge.DLumps
+							.get(TimesOreForge.setting.get(ore).BlockID);
+			ddensitya = (float) dblocksa
+					/ (float) TimesOreForge.DHeight.get(TimesOreForge.setting
+							.get(ore).BlockID);
+		}
 		String cache2 = Float.toString(density);
 		Density.displayString = StatCollector.translateToLocal("tof.density")
 				+ ": "
@@ -81,6 +94,9 @@ public class GuiOre extends GuiScreen {
 		float ddensity = (float) dblocks
 				/ (float) TimesOreForge.DHeight.get(TimesOreForge.setting
 						.get(ore).BaseBlock);
+		BaseBlock.displayString = Block.blocksList[TimesOreForge.setting
+				.get(ore).BaseBlock].translateBlockName()
+				+ StatCollector.translateToLocal("tof.base");
 
 		switch (TimesOreForge.setting.get(ore).isSetMultiple) {
 		case 0:
@@ -95,11 +111,11 @@ public class GuiOre extends GuiScreen {
 			for (int i = 6; i <= 11; i++) {
 				moveB[i].enabled = true;
 			}
-			BaseBlock.enabled = false;
-			BaseBlock.displayString = "";
 			break;
 		case 1:
-			String cache1 = Float.toString(density / ddensity + 1);
+			Float densityratiocache = density / ddensity;
+			densityratiocache += ddensitya / ddensity;
+			String cache1 = Float.toString(densityratiocache);
 			maxLumpsPerChunk.displayString = StatCollector
 					.translateToLocal("tof.ratio")
 					+ ": "
@@ -109,14 +125,11 @@ public class GuiOre extends GuiScreen {
 			for (int i = 6; i <= 11; i++) {
 				moveB[i].enabled = false;
 			}
-			BaseBlock.enabled = true;
-			BaseBlock.displayString = Block.blocksList[TimesOreForge.setting
-					.get(ore).BaseBlock].translateBlockName()
-					+ StatCollector.translateToLocal("tof.base");
 			break;
 		case 2:
-			String cache3 = Float
-					.toString((float) blocks / (float) dblocks + 1);
+			Float blockratiocache = (float) blocks / (float) dblocks;
+			blockratiocache += (float) dblocksa / (float) dblocks;
+			String cache3 = Float.toString(blockratiocache);
 			maxLumpsPerChunk.displayString = StatCollector
 					.translateToLocal("tof.ratio")
 					+ ": "
@@ -126,10 +139,6 @@ public class GuiOre extends GuiScreen {
 			for (int i = 6; i <= 11; i++) {
 				moveB[i].enabled = false;
 			}
-			BaseBlock.enabled = true;
-			BaseBlock.displayString = Block.blocksList[TimesOreForge.setting
-					.get(ore).BaseBlock].translateBlockName()
-					+ StatCollector.translateToLocal("tof.base");
 			break;
 		}
 	}
@@ -205,6 +214,15 @@ public class GuiOre extends GuiScreen {
 		fontRenderer.drawStringWithShadow(
 				StatCollector.translateToLocal("tof.chunkinfo"), 40, 130,
 				0xFFFFFF);
+		fontRenderer.drawStringWithShadow(
+				StatCollector.translateToLocal("tof.ratioinfo"), 40, 150,
+				0xFFFFFF);
+		fontRenderer.drawStringWithShadow(
+				StatCollector.translateToLocal("tof.ratioinfo2"), 40, 170,
+				0xFFFFFF);
+		fontRenderer.drawStringWithShadow(
+				StatCollector.translateToLocal("tof.baseblockinfo"), 40, 190,
+				0xFFFFFF);
 		super.drawScreen(i, j, k);
 	}
 
@@ -217,24 +235,23 @@ public class GuiOre extends GuiScreen {
 		case -2:
 			TimesOreForge.setting.get(ore).AllBiome = true;
 			TimesOreForge.setting.get(ore).Biome = new ArrayList<Integer>();
-			if (TimesOreForge.setting.get(ore).BlockID == Block.oreEmerald.blockID) {
+			if (TimesOreForge.DHeight.containsKey(TimesOreForge.setting
+					.get(ore).BlockID)) {
+				TimesOreForge.setting.get(ore).BaseBlock = TimesOreForge.setting
+						.get(ore).BlockID;
+			}
+			if (TimesOreForge.setting.get(ore).BaseBlock == Block.oreEmerald.blockID) {
 				TimesOreForge.setting.get(ore).AllBiome = false;
 				TimesOreForge.setting.get(ore).Biome
 						.add(BiomeGenBase.extremeHills.biomeID);
 				TimesOreForge.setting.get(ore).Biome
 						.add(BiomeGenBase.extremeHillsEdge.biomeID);
 			}
-			if (TimesOreForge.DHeight.containsKey(TimesOreForge.setting
-					.get(ore).BlockID)) {
-				TimesOreForge.setting.get(ore).BaseBlock = TimesOreForge.setting
-						.get(ore).BlockID;
-			}
 			TimesOreForge.setting.get(ore).Height = TimesOreForge.DHeight
 					.get(TimesOreForge.setting.get(ore).BaseBlock);
 			TimesOreForge.setting.get(ore).Blocks = TimesOreForge.DBlocks
 					.get(TimesOreForge.setting.get(ore).BaseBlock);
-			TimesOreForge.setting.get(ore).Lumps = TimesOreForge.DLumps
-					.get(TimesOreForge.setting.get(ore).BaseBlock);
+			TimesOreForge.setting.get(ore).Lumps = 0;
 			TimesOreForge.setting.get(ore).LikeLapis = (TimesOreForge.setting
 					.get(ore).BlockID == Block.oreLapis.blockID ? true : false);
 			getValue();
