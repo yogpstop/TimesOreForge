@@ -3,10 +3,13 @@ package org.yogpstop.tof;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.StatCollector;
 
 public class GuiSetting extends GuiScreen {
 	public GuiScreen parent;
+	public GuiSlotOres oreslot;
+	public GuiButton delete;
 
 	public GuiSetting(GuiScreen parentA) {
 		super();
@@ -16,67 +19,89 @@ public class GuiSetting extends GuiScreen {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
-		controlList.add(new GuiButton(TimesOreForge.Coal, this.width / 2 - 170,
-				40, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[0])));
-		controlList.add(new GuiButton(TimesOreForge.Iron, this.width / 2 + 20,
-				40, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[1])));
-		controlList.add(new GuiButton(TimesOreForge.Gold, this.width / 2 - 170,
-				70, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[2])));
-		controlList.add(new GuiButton(TimesOreForge.Diamond,
-				this.width / 2 + 20, 70, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[3])));
-		controlList.add(new GuiButton(TimesOreForge.Lapis,
-				this.width / 2 - 170, 100, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[4])));
-		controlList.add(new GuiButton(TimesOreForge.Redstone,
-				this.width / 2 + 20, 100, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[5])));
-		controlList.add(new GuiButton(TimesOreForge.Emerald,
-				this.width / 2 - 170, 130, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[6])));
+		controlList.add(new GuiButton(-1, this.width / 2 - 125,
+				this.height - 26, 250, 20, StatCollector
+						.translateToLocal("gui.done")));
+		controlList.add(new GuiButton(0, this.width * 2 / 3 + 10, 20, 100, 20,
+				StatCollector.translateToLocal("menu.options")));
 		controlList
-				.add(new GuiButton(TimesOreForge.Dirt, this.width / 2 + 20,
-						130, 150, 20, StatCollector
-								.translateToLocal(TimesOreForge.ores[7])));
-		controlList.add(new GuiButton(TimesOreForge.Gravel,
-				this.width / 2 - 170, 160, 150, 20, StatCollector
-						.translateToLocal(TimesOreForge.ores[8])));
-		controlList.add(new GuiButton(9, this.width / 2 + 20, 160, 150, 20,
-				StatCollector.translateToLocal("itemGroup.misc")));
-		controlList.add(new GuiButton(-1, this.width / 2 - 125, 200, 250, 20,
-				StatCollector.translateToLocal("gui.done")));
+				.add(new GuiButton(1, this.width * 2 / 3 + 10, 50, 100, 20,
+						StatCollector.translateToLocal("tof.addnewore")
+								+ "("
+								+ StatCollector
+										.translateToLocal("tof.fromlist") + ")"));
+		controlList.add(new GuiButton(3, this.width * 2 / 3 + 10, 80, 100, 20,
+				StatCollector.translateToLocal("tof.addnewore") + "("
+						+ StatCollector.translateToLocal("tof.manualinput")
+						+ ")"));
+		controlList
+				.add(delete = new GuiButton(2, this.width * 2 / 3 + 10, 110,
+						100, 20, StatCollector
+								.translateToLocal("selectServer.delete")));
+		oreslot = new GuiSlotOres(Minecraft.getMinecraft(), this.width * 3 / 5,
+				this.height, 30, this.height - 30, 18, this);
 	}
 
 	@Override
 	public void actionPerformed(GuiButton par1) {
 		switch (par1.id) {
-		case 9:
-			break;
 		case -1:
+			TimesOreForge.save();
+			TimesOreForge.parseSet();
+			KeyboardHandler.resetcount();
 			Minecraft.getMinecraft().displayGuiScreen(parent);
 			break;
-		default:
+		case 0:
 			Minecraft.getMinecraft().displayGuiScreen(
-					new GuiConstantOre(this, par1.id));
+					new GuiOre(this, oreslot.currentore));
 			break;
+		case 2:
+			Minecraft.getMinecraft().displayGuiScreen(
+					new GuiYesNo(this, StatCollector
+							.translateToLocal("tof.deleteblocksure"),
+							TimesOreForge.getname(TimesOreForge.setting
+									.get(oreslot.currentore).BlockID,
+									TimesOreForge.setting
+											.get(oreslot.currentore).Meta),
+							oreslot.currentore));
+			break;
+		case 1:
+			Minecraft.getMinecraft().displayGuiScreen(new GuiSelectBlock(this));
+			break;
+		case 3:
+			Minecraft.getMinecraft().displayGuiScreen(new GuiInputOre(this));
+			break;
+		default:
+			break;
+		}
+	}
+
+	public void deletetoggle() {
+		if (TimesOreForge.DLumps.containsKey(TimesOreForge.setting
+				.get(oreslot.currentore).BlockID)) {
+			delete.enabled = false;
+		} else {
+			delete.enabled = true;
 		}
 	}
 
 	@Override
 	public void drawScreen(int i, int j, float k) {
 		drawDefaultBackground();
-		String title = "Setting of TimesOreForge";
+		oreslot.drawScreen(i, j, k);
+		String title = StatCollector.translateToLocal("tof.setting");
 		fontRenderer.drawStringWithShadow(title,
-				(this.width - fontRenderer.getStringWidth(title)) / 2, 15,
+				(this.width - fontRenderer.getStringWidth(title)) / 2, 8,
 				0xFFFFFF);
 		super.drawScreen(i, j, k);
+		deletetoggle();
 	}
 
 	@Override
-	public void onGuiClosed() {
-		KeyboardHandler.resetcount();
+	public void confirmClicked(boolean par1, int par2) {
+		if (par1) {
+			TimesOreForge.setting.remove(par2);
+		}
+		Minecraft.getMinecraft().displayGuiScreen(this);
 	}
 }
