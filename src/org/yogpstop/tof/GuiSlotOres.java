@@ -1,8 +1,8 @@
 package org.yogpstop.tof;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiSlot;
-import net.minecraft.src.Tessellator;
+import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.renderer.Tessellator;
 
 public class GuiSlotOres extends GuiSlot {
 	private GuiSetting parent;

@@ -3,12 +3,12 @@ package org.yogpstop.tof;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.GuiSlot;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Tessellator;
+import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class GuiSlotBlockList extends GuiSlot {
 	List<ItemStack> blocklist = new ArrayList<ItemStack>();

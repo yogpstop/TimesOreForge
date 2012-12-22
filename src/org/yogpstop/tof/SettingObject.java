@@ -13,7 +13,7 @@ public class SettingObject {
 	public boolean LikeLapis;
 	public boolean AllBiome = true;
 	public int isSetMultiple = 1;
-	public int BaseBlock = net.minecraft.src.Block.oreCoal.blockID;
+	public int BaseBlock = net.minecraft.block.Block.oreCoal.blockID;
 	public ArrayList<Integer> Biome;
 
 	public SettingObject(int ABlockID, int AMeta) {

@@ -1,12 +1,12 @@
 package org.yogpstop.tof;
 
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiSmallButton;
-import net.minecraft.src.StringTranslate;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiSmallButton;
+import net.minecraft.util.StringTranslate;
 
 @SideOnly(Side.CLIENT)
 public class GuiError extends GuiScreen

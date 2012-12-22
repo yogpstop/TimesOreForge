@@ -1,9 +1,9 @@
 package org.yogpstop.tof;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.StatCollector;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.StatCollector;
 
 public class GuiSelectBlock extends GuiScreen {
 	public GuiScreen parent;
@@ -13,11 +13,12 @@ public class GuiSelectBlock extends GuiScreen {
 		super();
 		this.parent = parentA;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
-		blocks = new GuiSlotBlockList(Minecraft.getMinecraft(),this.width,this.height,24,this.height-32,18,this);
+		blocks = new GuiSlotBlockList(Minecraft.getMinecraft(), this.width,
+				this.height, 24, this.height - 32, 18, this);
 		controlList.add(new GuiButton(-1, this.width / 2 - 150,
 				this.height - 26, 140, 20, StatCollector
 						.translateToLocal("gui.done")));
@@ -25,18 +26,19 @@ public class GuiSelectBlock extends GuiScreen {
 				this.height - 26, 140, 20, StatCollector
 						.translateToLocal("gui.cancel")));
 	}
-	
+
 	@Override
 	public void actionPerformed(GuiButton par1) {
 		switch (par1.id) {
 		case -1:
-			TimesOreForge.setting.add(new SettingObject(blocks.currentblockid,blocks.currentmeta));
+			TimesOreForge.setting.add(new SettingObject(blocks.currentblockid,
+					blocks.currentmeta));
 		case -2:
 			Minecraft.getMinecraft().displayGuiScreen(parent);
 			break;
 		}
 	}
-	
+
 	@Override
 	public void drawScreen(int i, int j, float k) {
 		drawDefaultBackground();

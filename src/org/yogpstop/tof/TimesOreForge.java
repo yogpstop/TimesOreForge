@@ -11,12 +11,13 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.StatCollector;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldGenMinable;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.feature.WorldGenMinable;
+
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IWorldGenerator;

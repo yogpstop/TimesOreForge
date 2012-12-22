@@ -1,11 +1,12 @@
 package org.yogpstop.tof;
 
+import net.minecraft.client.settings.KeyBinding;
+
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.src.KeyBinding;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
-import cpw.mods.fml.common.asm.SideOnly;
-import cpw.mods.fml.common.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {

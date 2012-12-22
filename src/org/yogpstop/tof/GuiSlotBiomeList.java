@@ -6,11 +6,11 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiSlot;
-import net.minecraft.src.StatCollector;
-import net.minecraft.src.Tessellator;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class GuiSlotBiomeList extends GuiSlot {
 	private TreeMap<Integer, String> biome = new TreeMap<Integer, String>();

@@ -1,11 +1,12 @@
 package org.yogpstop.tof;
 
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiSmallButton;
-import net.minecraft.src.StringTranslate;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiSmallButton;
+import net.minecraft.util.StringTranslate;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+
 
 @SideOnly(Side.CLIENT)
 public class GuiYesNo extends GuiScreen
@@ -40,7 +41,7 @@ public class GuiYesNo extends GuiScreen
         this.controlList.add(new GuiSmallButton(1, this.width / 2 - 155 + 160, this.height / 6 + 96, this.buttonText2));
     }
 
-    protected void actionPerformed(GuiButton par1GuiButton)
+	protected void actionPerformed(GuiButton par1GuiButton)
     {
         this.parentScreen.confirmClicked(par1GuiButton.id == 0, this.oreId);
     }
