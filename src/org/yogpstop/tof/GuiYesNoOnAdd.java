@@ -45,7 +45,7 @@ public class GuiYesNoOnAdd extends GuiScreen {
 
 	protected void actionPerformed(GuiButton par1) {
 		if (par1.id == 0) {
-			TimesOreForge.setting.add(new SettingObject(oreId, meta));
+			TimesOreForge.setting.add(new SettingObject((short) oreId, meta));
 		}
 		Minecraft.getMinecraft().displayGuiScreen(parentScreen);
 	}

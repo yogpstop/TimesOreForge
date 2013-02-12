@@ -39,8 +39,8 @@ public class GuiSlotOres extends GuiSlot {
 	protected void drawSlot(int var1, int var2, int var3, int var4,
 			Tessellator var5) {
 		String name = TimesOreForge.getname(
-				TimesOreForge.setting.get(var1).BlockID,
-				TimesOreForge.setting.get(var1).Meta);
+				TimesOreForge.setting.get(var1).blockID,
+				TimesOreForge.setting.get(var1).meta);
 		Minecraft.getMinecraft().fontRenderer
 				.drawStringWithShadow(
 						name,

@@ -1,7 +1,5 @@
 package org.yogpstop.tof;
 
-import java.util.ArrayList;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -11,8 +9,6 @@ public class GuiBiomeSelect extends GuiScreen {
 	public GuiScreen parent;
 	private GuiSlotBiomeList biomeList;
 	private GuiButton all;
-	int i, j;
-	float k;
 
 	public GuiBiomeSelect(GuiScreen parentA) {
 		super();
@@ -28,8 +24,8 @@ public class GuiBiomeSelect extends GuiScreen {
 		controlList.add(all);
 		this.biomeList = new GuiSlotBiomeList(mc, this.width, this.height, 40,
 				this.height - 30, 18, this);
-		if (TimesOreForge.setting.get(((GuiOre) parent).ore).AllBiome) {
-			TimesOreForge.setting.get(((GuiOre) parent).ore).Biome = new ArrayList<Integer>();
+		if (TimesOreForge.setting.get(((GuiOre) parent).ore).allBiome) {
+			TimesOreForge.setting.get(((GuiOre) parent).ore).biomes.clear();
 			all.displayString = StatCollector.translateToLocal("tof.allbiome")
 					+ ": " + StatCollector.translateToLocal("options.on");
 		} else {
@@ -39,10 +35,7 @@ public class GuiBiomeSelect extends GuiScreen {
 	}
 
 	@Override
-	public void drawScreen(int I, int J, float K) {
-		i = I;
-		j = J;
-		k = K;
+	public void drawScreen(int i, int j, float k) {
 		drawDefaultBackground();
 		this.biomeList.drawScreen(i, j, k);
 		String title = StatCollector.translateToLocal("tof.selectbiome");
@@ -63,8 +56,8 @@ public class GuiBiomeSelect extends GuiScreen {
 			Minecraft.getMinecraft().displayGuiScreen(parent);
 			break;
 		case 0:
-			TimesOreForge.setting.get(((GuiOre) parent).ore).AllBiome = (TimesOreForge.setting
-					.get(((GuiOre) parent).ore).AllBiome ? false : true);
+			TimesOreForge.setting.get(((GuiOre) parent).ore).allBiome = (TimesOreForge.setting
+					.get(((GuiOre) parent).ore).allBiome ? false : true);
 			update();
 		default:
 			break;

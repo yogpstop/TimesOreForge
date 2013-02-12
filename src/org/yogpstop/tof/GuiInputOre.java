@@ -8,9 +8,9 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.util.StatCollector;
 
 public class GuiInputOre extends GuiScreen {
-	public GuiScreen parent;
-	public GuiTextField blockid;
-	public GuiTextField meta;
+	private GuiScreen parent;
+	private GuiTextField blockid;
+	private GuiTextField meta;
 
 	public GuiInputOre(GuiScreen parents) {
 		parent = parents;
@@ -52,8 +52,8 @@ public class GuiInputOre extends GuiScreen {
 				return;
 			}
 			for (int i = 0; i < TimesOreForge.setting.size(); i++) {
-				if (bid == TimesOreForge.setting.get(i).BlockID
-						&& metaid == TimesOreForge.setting.get(i).Meta) {
+				if (bid == TimesOreForge.setting.get(i).blockID
+						&& metaid == TimesOreForge.setting.get(i).meta) {
 					Minecraft.getMinecraft().displayGuiScreen(
 							new GuiError(this, StatCollector
 									.translateToLocal("tof.alreadyerror"),

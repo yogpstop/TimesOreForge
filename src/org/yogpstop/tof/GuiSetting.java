@@ -6,10 +6,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 
 public class GuiSetting extends GuiScreen {
-	public GuiScreen parent;
-	public GuiSlotOres oreslot;
-	public GuiButton delete;
-	public GuiButton setting;
+	private GuiScreen parent;
+	private GuiSlotOres oreslot;
+	private GuiButton delete;
+	private GuiButton setting;
 
 	public GuiSetting(GuiScreen parentA) {
 		super();
@@ -47,7 +47,6 @@ public class GuiSetting extends GuiScreen {
 		switch (par1.id) {
 		case -1:
 			TimesOreForge.save();
-			TimesOreForge.parseSet();
 			KeyboardHandler.resetcount();
 			Minecraft.getMinecraft().displayGuiScreen(parent);
 			break;
@@ -60,9 +59,9 @@ public class GuiSetting extends GuiScreen {
 					new GuiYesNo(this, StatCollector
 							.translateToLocal("tof.deleteblocksure"),
 							TimesOreForge.getname(TimesOreForge.setting
-									.get(oreslot.currentore).BlockID,
+									.get(oreslot.currentore).blockID,
 									TimesOreForge.setting
-											.get(oreslot.currentore).Meta),
+											.get(oreslot.currentore).meta),
 							oreslot.currentore));
 			break;
 		case 1:

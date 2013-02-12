@@ -13,7 +13,15 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class GuiSlotBiomeList extends GuiSlot {
-	private TreeMap<Integer, String> biome = new TreeMap<Integer, String>();
+	private static final TreeMap<Integer, String> biome = new TreeMap<Integer, String>();
+	static {
+		for (int i = 0; i < BiomeGenBase.biomeList.length; i++) {
+			if (BiomeGenBase.biomeList[i] != null) {
+				if (!BiomeGenBase.biomeList[i].biomeName.contains("Hell"))
+					biome.put(i, BiomeGenBase.biomeList[i].biomeName);
+			}
+		}
+	}
 	private int[] biomeid;
 	private GuiBiomeSelect parent;
 	private GuiButton[] onoff;
@@ -21,12 +29,6 @@ public class GuiSlotBiomeList extends GuiSlot {
 	public GuiSlotBiomeList(Minecraft par1Minecraft, int par2, int par3,
 			int par4, int par5, int par6, GuiBiomeSelect parents) {
 		super(par1Minecraft, par2, par3, par4, par5, par6);
-		for (int i = 0; i < BiomeGenBase.biomeList.length; i++) {
-			if (BiomeGenBase.biomeList[i] != null) {
-				if (!BiomeGenBase.biomeList[i].biomeName.contains("Hell"))
-					biome.put(i, BiomeGenBase.biomeList[i].biomeName);
-			}
-		}
 		biomeid = new int[biome.size()];
 		onoff = new GuiButton[biome.size()];
 		Set<Map.Entry<Integer, String>> entrySet = biome.entrySet();
@@ -47,19 +49,23 @@ public class GuiSlotBiomeList extends GuiSlot {
 
 	@Override
 	protected void elementClicked(int var1, boolean var2) {
-		if (TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).AllBiome)
+		if (TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).allBiome)
 			return;
-		if (TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).Biome
+		if (TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).biomes
 				.contains(biomeid[var1])) {
-			TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).Biome
-					.remove(TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).Biome
+			TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).biomes
+					.remove(TimesOreForge.setting
+							.get(((GuiOre) this.parent.parent).ore).biomes
 							.indexOf(biomeid[var1]));
 		} else {
-			TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).Biome
+			TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).biomes
 					.add(biomeid[var1]);
 		}
-		onoff[var1].displayString = (TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).Biome
-				.contains(biomeid[var1]) ? StatCollector.translateToLocal("options.on") : StatCollector.translateToLocal("options.off"));
+		onoff[var1].displayString = (TimesOreForge.setting
+				.get(((GuiOre) this.parent.parent).ore).biomes
+				.contains(biomeid[var1]) ? StatCollector
+				.translateToLocal("options.on") : StatCollector
+				.translateToLocal("options.off"));
 	}
 
 	@Override
@@ -75,7 +81,7 @@ public class GuiSlotBiomeList extends GuiSlot {
 	@Override
 	protected void drawSlot(int var1, int var2, int var3, int var4,
 			Tessellator var5) {
-		if (TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).AllBiome)
+		if (TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).allBiome)
 			return;
 		onoff[var1] = new GuiButton(
 				var1,
@@ -83,13 +89,15 @@ public class GuiSlotBiomeList extends GuiSlot {
 				var3 + 2,
 				30,
 				10,
-				(TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).Biome
-						.contains(biomeid[var1]) ? StatCollector.translateToLocal("options.on") : StatCollector.translateToLocal("options.off")));
+				(TimesOreForge.setting.get(((GuiOre) this.parent.parent).ore).biomes
+						.contains(biomeid[var1]) ? StatCollector
+						.translateToLocal("options.on") : StatCollector
+						.translateToLocal("options.off")));
 		onoff[var1].enabled = false;
 		onoff[var1].drawButton(Minecraft.getMinecraft(), 0, 0);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(this.biome
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(biome
 				.get(biomeid[var1]), (this.parent.width - Minecraft
-				.getMinecraft().fontRenderer.getStringWidth(this.biome
+				.getMinecraft().fontRenderer.getStringWidth(biome
 				.get(biomeid[var1]))) / 2, var3 + 1, 0xFFFFFF);
 	}
 

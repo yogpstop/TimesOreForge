@@ -6,8 +6,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 
 public class GuiSelectBlock extends GuiScreen {
-	public GuiScreen parent;
-	public GuiSlotBlockList blocks;
+	private GuiScreen parent;
+	private GuiSlotBlockList blocks;
 
 	public GuiSelectBlock(GuiScreen parentA) {
 		super();
@@ -31,8 +31,8 @@ public class GuiSelectBlock extends GuiScreen {
 	public void actionPerformed(GuiButton par1) {
 		switch (par1.id) {
 		case -1:
-			TimesOreForge.setting.add(new SettingObject(blocks.currentblockid,
-					blocks.currentmeta));
+			TimesOreForge.setting.add(new SettingObject(
+					(short) blocks.currentblockid, blocks.currentmeta));
 		case -2:
 			Minecraft.getMinecraft().displayGuiScreen(parent);
 			break;

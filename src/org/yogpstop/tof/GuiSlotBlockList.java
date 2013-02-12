@@ -11,14 +11,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class GuiSlotBlockList extends GuiSlot {
-	List<ItemStack> blocklist = new ArrayList<ItemStack>();
+	private static final List<ItemStack> blocklist = new ArrayList<ItemStack>();
 	private GuiSelectBlock parent;
 	public int currentblockid;
 	public int currentmeta;
 
-	public GuiSlotBlockList(Minecraft par1Minecraft, int par2, int par3,
-			int par4, int par5, int par6, GuiSelectBlock parents) {
-		super(par1Minecraft, par2, par3, par4, par5, par6);
+	static {
 		for (int i = 0; i < 4096; i++) {
 			if (Block.blocksList[i] != null) {
 				if (Item.itemsList[i] != null) {
@@ -38,15 +36,21 @@ public class GuiSlotBlockList extends GuiSlot {
 				continue;
 			}
 			for (int j = 0; j < TimesOreForge.setting.size(); j++) {
-				if (blocklist.get(i).itemID == TimesOreForge.setting.get(j).BlockID
+				if (blocklist.get(i).itemID == TimesOreForge.setting.get(j).blockID
 						&& blocklist.get(i).getItemDamage() == TimesOreForge.setting
-								.get(j).Meta) {
+								.get(j).meta) {
 					blocklist.remove(i);
 					i--;
 					continue;
 				}
 			}
 		}
+	}
+
+	public GuiSlotBlockList(Minecraft par1Minecraft, int par2, int par3,
+			int par4, int par5, int par6, GuiSelectBlock parents) {
+		super(par1Minecraft, par2, par3, par4, par5, par6);
+
 		parent = parents;
 	}
 
@@ -57,14 +61,14 @@ public class GuiSlotBlockList extends GuiSlot {
 
 	@Override
 	protected void elementClicked(int var1, boolean var2) {
-		currentblockid = this.blocklist.get(var1).itemID;
-		currentmeta = this.blocklist.get(var1).getItemDamage();
+		currentblockid = blocklist.get(var1).itemID;
+		currentmeta = blocklist.get(var1).getItemDamage();
 	}
 
 	@Override
 	protected boolean isSelected(int var1) {
-		return this.blocklist.get(var1).itemID == currentblockid
-				&& currentmeta == this.blocklist.get(var1).getItemDamage();
+		return blocklist.get(var1).itemID == currentblockid
+				&& currentmeta == blocklist.get(var1).getItemDamage();
 	}
 
 	@Override
@@ -75,8 +79,8 @@ public class GuiSlotBlockList extends GuiSlot {
 	@Override
 	protected void drawSlot(int var1, int var2, int var3, int var4,
 			Tessellator var5) {
-		String name = TimesOreForge.getname(this.blocklist.get(var1).itemID,
-				this.blocklist.get(var1).getItemDamage());
+		String name = TimesOreForge.getname(blocklist.get(var1).itemID,
+				blocklist.get(var1).getItemDamage());
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(name,
 				(this.parent.width - Minecraft.getMinecraft().fontRenderer
 						.getStringWidth(name)) / 2, var3 + 1, 0xFFFFFF);
