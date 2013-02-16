@@ -35,20 +35,20 @@ public class GuiInputOre extends GuiScreen {
 	public void actionPerformed(GuiButton par1) {
 		switch (par1.id) {
 		case -1:
-			int bid,
-			metaid;
+			short bid;
+			int metaid;
 			try {
-				bid = Integer.parseInt(blockid.getText());
+				bid = Short.parseShort(blockid.getText());
 			} catch (Exception e) {
 				blockid.setText(StatCollector
-						.translateToLocal("tof.onlynaturalnumber"));
+						.translateToLocal("tof.error"));
 				return;
 			}
 			try {
 				metaid = Integer.parseInt(meta.getText());
 			} catch (Exception e) {
 				meta.setText(StatCollector
-						.translateToLocal("tof.onlynaturalnumber"));
+						.translateToLocal("tof.error"));
 				return;
 			}
 			for (int i = 0; i < TimesOreForge.setting.size(); i++) {

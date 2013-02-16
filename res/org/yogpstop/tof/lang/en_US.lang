@@ -1,5 +1,5 @@
 tof.allbiome=GenerateOnAllBiome
-tof.onlynaturalnumber=Only natural number!!
+tof.error=Error
 tof.addblocksure=Are you sure to add this block?
 tof.blockid=Blockid
 tof.meta=Meta

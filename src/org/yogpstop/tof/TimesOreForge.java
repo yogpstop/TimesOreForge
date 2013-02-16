@@ -81,7 +81,7 @@ public class TimesOreForge implements IWorldGenerator {
 		}
 	}
 
-	public static String getname(int blockid, int meta) {
+	public static String getname(short blockid, int meta) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(blockid);
 		if (meta != 0) {

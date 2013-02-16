@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public class GuiSlotBlockList extends GuiSlot {
 	private static final List<ItemStack> blocklist = new ArrayList<ItemStack>();
 	private GuiSelectBlock parent;
-	public int currentblockid;
+	public short currentblockid;
 	public int currentmeta;
 
 	static {
@@ -61,7 +61,7 @@ public class GuiSlotBlockList extends GuiSlot {
 
 	@Override
 	protected void elementClicked(int var1, boolean var2) {
-		currentblockid = blocklist.get(var1).itemID;
+		currentblockid = (short) blocklist.get(var1).itemID;
 		currentmeta = blocklist.get(var1).getItemDamage();
 	}
 
@@ -79,7 +79,7 @@ public class GuiSlotBlockList extends GuiSlot {
 	@Override
 	protected void drawSlot(int var1, int var2, int var3, int var4,
 			Tessellator var5) {
-		String name = TimesOreForge.getname(blocklist.get(var1).itemID,
+		String name = TimesOreForge.getname((short) blocklist.get(var1).itemID,
 				blocklist.get(var1).getItemDamage());
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(name,
 				(this.parent.width - Minecraft.getMinecraft().fontRenderer
