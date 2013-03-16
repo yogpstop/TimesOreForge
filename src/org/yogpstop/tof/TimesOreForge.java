@@ -28,75 +28,71 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(modid = "TimesOreForge", name = "TimesOreForge", version = "@VERSION@")
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class TimesOreForge implements IWorldGenerator {
-	@SidedProxy(clientSide = "org.yogpstop.tof.ClientProxy", serverSide = "org.yogpstop.tof.CommonProxy")
-	public static CommonProxy proxy;
+    @SidedProxy(clientSide = "org.yogpstop.tof.ClientProxy", serverSide = "org.yogpstop.tof.CommonProxy")
+    public static CommonProxy proxy;
 
-	public static final ArrayList<SettingObject> setting = new ArrayList<SettingObject>();
-	private static File settingF;
+    public static final ArrayList<SettingObject> setting = new ArrayList<SettingObject>();
+    private static File settingF;
 
-	@Mod.PreInit
-	public void preload(FMLPreInitializationEvent event) {
-		settingF = event.getSuggestedConfigurationFile();
-		setting.clear();
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(settingF));
-			String line;
-			while ((line = br.readLine()) != null) {
-				if (line != null && line != "")
-					setting.add(new SettingObject(line));
-			}
-			br.close();
-		} catch (IOException e) {
-			save();
-		}
-		LanguageRegistry.instance().loadLocalization(
-				"/org/yogpstop/tof/lang/en_US.lang", "en_US", false);
-		LanguageRegistry.instance().loadLocalization(
-				"/org/yogpstop/tof/lang/ja_JP.lang", "ja_JP", false);
-		GameRegistry.registerWorldGenerator(this);
-	}
+    @Mod.PreInit
+    public void preload(FMLPreInitializationEvent event) {
+        settingF = event.getSuggestedConfigurationFile();
+        setting.clear();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(settingF));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line != null && line != "")
+                    setting.add(new SettingObject(line));
+            }
+            br.close();
+        } catch (IOException e) {
+            save();
+        }
+        LanguageRegistry.instance().loadLocalization("/org/yogpstop/tof/lang/en_US.lang", "en_US", false);
+        LanguageRegistry.instance().loadLocalization("/org/yogpstop/tof/lang/ja_JP.lang", "ja_JP", false);
+        GameRegistry.registerWorldGenerator(this);
+    }
 
-	@Mod.PostInit
-	public void postInit(FMLPostInitializationEvent event) {
-		proxy.setKeyHandler();
-	}
+    @Mod.PostInit
+    public void postInit(FMLPostInitializationEvent event) {
+        proxy.setKeyHandler();
+    }
 
-	@Override
-	public void generate(Random random, int x, int z, World world,
-			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		for (SettingObject s : setting) {
-			s.generate(world, random, x, z);
-		}
-	}
+    @Override
+    public void generate(Random r, int x, int z, World w, IChunkProvider cg, IChunkProvider cp) {
+        for (SettingObject s : setting)
+            s.generate(w, r, x, z);
+    }
 
-	public static void save() {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(settingF));
-			for (int i = 0; i < setting.size(); i++) {
-				setting.get(i).save(bw);
-			}
-			bw.close();
-		} catch (IOException e) {
-			FMLLog.log(Level.SEVERE, "Can't save config");
-		}
-	}
+    public static void save() {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(settingF));
+            for (int i = 0; i < setting.size(); i++) {
+                setting.get(i).save(bw);
+            }
+            bw.close();
+        } catch (IOException e) {
+            FMLLog.log(Level.SEVERE, "Can't save config");
+        }
+    }
 
-	public static String getname(short blockid, int meta) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(blockid);
-		if (meta != 0) {
-			sb.append(":");
-			sb.append(meta);
-		}
-		sb.append("  ");
-		ItemStack cache = new ItemStack(blockid, 1, meta);
-		if (cache.getItem() == null) {
-			sb.append(StatCollector.translateToLocal("tof.nullblock"));
-		} else if (cache.getDisplayName() == null) {
-			sb.append(StatCollector.translateToLocal("tof.nullname"));
-		} else {
-			sb.append(cache.getDisplayName());
-		}
-		return sb.toString();
-	}
+    public static String getname(short blockid, int meta) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(blockid);
+        if (meta != 0) {
+            sb.append(":");
+            sb.append(meta);
+        }
+        sb.append("  ");
+        ItemStack cache = new ItemStack(blockid, 1, meta);
+        if (cache.getItem() == null) {
+            sb.append(StatCollector.translateToLocal("tof.nullblock"));
+        } else if (cache.getDisplayName() == null) {
+            sb.append(StatCollector.translateToLocal("tof.nullname"));
+        } else {
+            sb.append(cache.getDisplayName());
+        }
+        return sb.toString();
+    }
 }

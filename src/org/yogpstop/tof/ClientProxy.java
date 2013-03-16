@@ -10,17 +10,15 @@ import cpw.mods.fml.relauncher.Side;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
-	public static int bindKey = Keyboard.KEY_O;
+    public static int bindKey = Keyboard.KEY_O;
 
-	@Override
-	public void setKeyHandler() {
-		KeyBinding[] myBinding = { new KeyBinding("TimesOreForgeConfigKey",
-				bindKey) };
+    @Override
+    public void setKeyHandler() {
+        KeyBinding[] myBinding = { new KeyBinding("TimesOreForgeConfigKey", bindKey) };
 
-		boolean[] myBindingRepeat = { false };
+        boolean[] myBindingRepeat = { false };
 
-		KeyBindingRegistry.registerKeyBinding(new KeyboardHandler(myBinding,
-				myBindingRepeat));
-	}
+        KeyBindingRegistry.registerKeyBinding(new KeyboardHandler(myBinding, myBindingRepeat));
+    }
 
 }
