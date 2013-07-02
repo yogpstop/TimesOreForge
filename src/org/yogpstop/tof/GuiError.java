@@ -24,15 +24,17 @@ public class GuiError extends GuiScreen {
 		this.buttonText1 = StatCollector.translateToLocal("gui.done");
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public void initGui() {
 		this.buttonList.add(new GuiSmallButton(0, this.width / 2 - 75, this.height / 6 + 96, this.buttonText1));
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
-		Minecraft.getMinecraft().displayGuiScreen(parentScreen);
+		Minecraft.getMinecraft().displayGuiScreen(this.parentScreen);
 	}
 
+	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
 		this.drawCenteredString(this.fontRenderer, this.message1, this.width / 2, 70, 16777215);

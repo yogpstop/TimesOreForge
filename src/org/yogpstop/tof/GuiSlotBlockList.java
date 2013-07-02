@@ -45,7 +45,7 @@ public class GuiSlotBlockList extends GuiSlot {
 	public GuiSlotBlockList(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6, GuiSelectBlock parents) {
 		super(par1Minecraft, par2, par3, par4, par5, par6);
 
-		parent = parents;
+		this.parent = parents;
 	}
 
 	@Override
@@ -55,13 +55,13 @@ public class GuiSlotBlockList extends GuiSlot {
 
 	@Override
 	protected void elementClicked(int var1, boolean var2) {
-		currentblockid = (short) blocklist.get(var1).itemID;
-		currentmeta = blocklist.get(var1).getItemDamage();
+		this.currentblockid = (short) blocklist.get(var1).itemID;
+		this.currentmeta = blocklist.get(var1).getItemDamage();
 	}
 
 	@Override
 	protected boolean isSelected(int var1) {
-		return blocklist.get(var1).itemID == currentblockid && currentmeta == blocklist.get(var1).getItemDamage();
+		return blocklist.get(var1).itemID == this.currentblockid && this.currentmeta == blocklist.get(var1).getItemDamage();
 	}
 
 	@Override

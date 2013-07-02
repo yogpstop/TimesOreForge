@@ -25,23 +25,25 @@ public class GuiYesNoOnAdd extends GuiScreen {
 		StringTranslate var5 = StringTranslate.getInstance();
 		this.buttonText1 = var5.translateKey("gui.yes");
 		this.buttonText2 = var5.translateKey("gui.no");
-		oreId = par4;
-		meta = par5;
+		this.oreId = par4;
+		this.meta = par5;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public void initGui() {
 		this.buttonList.add(new GuiSmallButton(0, this.width / 2 - 155, this.height / 6 + 96, this.buttonText1));
 		this.buttonList.add(new GuiSmallButton(1, this.width / 2 - 155 + 160, this.height / 6 + 96, this.buttonText2));
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton par1) {
 		if (par1.id == 0) {
-			TimesOreForge.setting.add(new SettingObject((short) oreId, meta));
+			TimesOreForge.setting.add(new SettingObject((short) this.oreId, this.meta));
 		}
 		Minecraft.getMinecraft().displayGuiScreen(new GuiSetting());
 	}
 
+	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
 		this.drawCenteredString(this.fontRenderer, this.message1, this.width / 2, 70, 16777215);

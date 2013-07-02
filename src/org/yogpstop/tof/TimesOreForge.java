@@ -42,7 +42,7 @@ public class TimesOreForge implements IWorldGenerator {
 			BufferedReader br = new BufferedReader(new FileReader(settingF));
 			String line;
 			while ((line = br.readLine()) != null) {
-				if (line != null && line != "") setting.add(new SettingObject(line));
+				if (line != "") setting.add(new SettingObject(line));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -54,7 +54,7 @@ public class TimesOreForge implements IWorldGenerator {
 	}
 
 	@Mod.PostInit
-	public void postInit(FMLPostInitializationEvent event) {
+	public static void postInit(FMLPostInitializationEvent event) {
 		proxy.setKeyHandler();
 	}
 

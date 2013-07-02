@@ -18,23 +18,23 @@ public class SettingObject {
 	private boolean modified;
 
 	public int getBlocks() {
-		return blocks;
+		return this.blocks;
 	}
 
 	public void setBlocks(int i) {
-		blocks = i;
-		modified = true;
+		this.blocks = i;
+		this.modified = true;
 	}
 
 	public void shiftBlocks(int i) {
-		blocks += i;
-		modified = true;
+		this.blocks += i;
+		this.modified = true;
 	}
 
 	public void closeGui() {
-		if (modified) {
-			wGenM = new WorldGenMinable(blockID, meta, blocks, Block.stone.blockID);
-			modified = false;
+		if (this.modified) {
+			this.wGenM = new WorldGenMinable(this.blockID, this.meta, this.blocks, Block.stone.blockID);
+			this.modified = false;
 		}
 	}
 
@@ -49,64 +49,64 @@ public class SettingObject {
 	public final ArrayList<Integer> biomes = new ArrayList<Integer>();
 
 	public SettingObject(short ABlockID, int AMeta) {
-		blockID = ABlockID;
-		meta = AMeta;
+		this.blockID = ABlockID;
+		this.meta = AMeta;
 		byte index;
-		if ((index = Default.get(blockID)) != -1) {
-			height = Default.height(index);
-			blocks = Default.blocks(index);
-			baseBlock = blockID;
+		if ((index = Default.get(this.blockID)) != -1) {
+			this.height = Default.height(index);
+			this.blocks = Default.blocks(index);
+			this.baseBlock = this.blockID;
 		}
-		wGenM = new WorldGenMinable(blockID, meta, blocks, Block.stone.blockID);
+		this.wGenM = new WorldGenMinable(this.blockID, this.meta, this.blocks, Block.stone.blockID);
 	}
 
 	public SettingObject(String Line) {
 		String[] cache = Line.split(",");
-		lumps = Integer.valueOf(cache[0]);
-		height = Integer.valueOf(cache[1]);
-		blocks = Integer.valueOf(cache[2]);
-		blockID = Short.valueOf(cache[3]);
-		meta = Integer.valueOf(cache[4]);
-		likeLapis = Boolean.valueOf(cache[5]);
-		allBiome = Boolean.valueOf(cache[6]);
-		isSetMultiple = Byte.valueOf(cache[7]);
-		baseBlock = Short.valueOf(cache[8]);
+		this.lumps = Integer.valueOf(cache[0]);
+		this.height = Integer.valueOf(cache[1]);
+		this.blocks = Integer.valueOf(cache[2]);
+		this.blockID = Short.valueOf(cache[3]);
+		this.meta = Integer.valueOf(cache[4]);
+		this.likeLapis = Boolean.valueOf(cache[5]);
+		this.allBiome = Boolean.valueOf(cache[6]);
+		this.isSetMultiple = Byte.valueOf(cache[7]);
+		this.baseBlock = Short.valueOf(cache[8]);
 		if (cache.length == 10) {
 			String[] cachebiome = cache[9].split(":");
 			if (cachebiome.length <= 1 && cachebiome[0].equals("")) return;
 			for (int i = 0; i < cachebiome.length; i++) {
-				biomes.add(Integer.valueOf(cachebiome[i]));
+				this.biomes.add(Integer.valueOf(cachebiome[i]));
 			}
 		}
-		wGenM = new WorldGenMinable(Integer.valueOf(cache[3]), Integer.valueOf(cache[4]), Integer.valueOf(cache[2]), Block.stone.blockID);
+		this.wGenM = new WorldGenMinable(Integer.valueOf(cache[3]), Integer.valueOf(cache[4]), Integer.valueOf(cache[2]), Block.stone.blockID);
 	}
 
 	public void save(BufferedWriter bw) {
 		try {
-			bw.append(Integer.toString(lumps));
+			bw.append(Integer.toString(this.lumps));
 			bw.append(",");
-			bw.append(Integer.toString(height));
+			bw.append(Integer.toString(this.height));
 			bw.append(",");
-			bw.append(Integer.toString(blocks));
+			bw.append(Integer.toString(this.blocks));
 			bw.append(",");
-			bw.append(Short.toString(blockID));
+			bw.append(Short.toString(this.blockID));
 			bw.append(",");
-			bw.append(Integer.toString(meta));
+			bw.append(Integer.toString(this.meta));
 			bw.append(",");
-			bw.append(Boolean.toString(likeLapis));
+			bw.append(Boolean.toString(this.likeLapis));
 			bw.append(",");
-			bw.append(Boolean.toString(allBiome));
+			bw.append(Boolean.toString(this.allBiome));
 			bw.append(",");
-			bw.append(Byte.toString(isSetMultiple));
+			bw.append(Byte.toString(this.isSetMultiple));
 			bw.append(",");
-			bw.append(Short.toString(baseBlock));
-			if (!biomes.isEmpty()) {
+			bw.append(Short.toString(this.baseBlock));
+			if (!this.biomes.isEmpty()) {
 				bw.append(",");
-				for (int i = 1; i < biomes.size(); i++) {
-					bw.append(biomes.get(i - 1).toString());
+				for (int i = 1; i < this.biomes.size(); i++) {
+					bw.append(this.biomes.get(i - 1).toString());
 					bw.append(":");
 				}
-				bw.append(biomes.get(biomes.size()).toString());
+				bw.append(this.biomes.get(this.biomes.size()).toString());
 			}
 			bw.append("\n");
 		} catch (IOException e) {
@@ -115,18 +115,18 @@ public class SettingObject {
 	}
 
 	public void generate(World w, Random r, int cx, int cz) {
-		for (int l = 0; l < lumps; l++) {
+		for (int l = 0; l < this.lumps; l++) {
 			int x = cx * 16 + r.nextInt(16);
 			int y;
-			if (likeLapis) {
-				int cache = height / 2;
+			if (this.likeLapis) {
+				int cache = this.height / 2;
 				y = r.nextInt(cache) + r.nextInt(cache);
 			} else {
-				y = r.nextInt(height);
+				y = r.nextInt(this.height);
 			}
 			int z = cz * 16 + r.nextInt(16);
-			System.out.println(allBiome);
-			if (allBiome || biomes.contains(w.getBiomeGenForCoords(x, z).biomeID)) wGenM.generate(w, r, x, y, z);
+			System.out.println(this.allBiome);
+			if (this.allBiome || this.biomes.contains(w.getBiomeGenForCoords(x, z).biomeID)) this.wGenM.generate(w, r, x, y, z);
 		}
 	}
 }

@@ -11,7 +11,7 @@ public class GuiSlotOres extends GuiSlot {
 	public GuiSlotOres(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6, GuiSetting parents) {
 		super(par1Minecraft, par2, par3, par4, par5, par6);
 
-		parent = parents;
+		this.parent = parents;
 	}
 
 	@Override
@@ -21,12 +21,12 @@ public class GuiSlotOres extends GuiSlot {
 
 	@Override
 	protected void elementClicked(int var1, boolean var2) {
-		currentore = var1;
+		this.currentore = var1;
 	}
 
 	@Override
 	protected boolean isSelected(int var1) {
-		return var1 == currentore;
+		return var1 == this.currentore;
 	}
 
 	@Override
