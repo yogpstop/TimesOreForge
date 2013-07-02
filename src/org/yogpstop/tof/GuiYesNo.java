@@ -3,7 +3,7 @@ package org.yogpstop.tof;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSmallButton;
-import net.minecraft.util.StringTranslate;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
@@ -23,9 +23,8 @@ public class GuiYesNo extends GuiScreen {
 		this.parentScreen = par1GuiScreen;
 		this.message1 = par2Str;
 		this.message2 = par3Str;
-		StringTranslate var5 = StringTranslate.getInstance();
-		this.buttonText1 = var5.translateKey("gui.yes");
-		this.buttonText2 = var5.translateKey("gui.no");
+		this.buttonText1 = StatCollector.translateToLocal("gui.yes");
+		this.buttonText2 = StatCollector.translateToLocal("gui.no");
 		this.oreId = par4;
 	}
 

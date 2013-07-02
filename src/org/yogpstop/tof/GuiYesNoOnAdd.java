@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSmallButton;
-import net.minecraft.util.StringTranslate;
+import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
 public class GuiYesNoOnAdd extends GuiScreen {
@@ -22,9 +22,8 @@ public class GuiYesNoOnAdd extends GuiScreen {
 	public GuiYesNoOnAdd(String par2Str, String par3Str, int par4, int par5) {
 		this.message1 = par2Str;
 		this.message2 = par3Str;
-		StringTranslate var5 = StringTranslate.getInstance();
-		this.buttonText1 = var5.translateKey("gui.yes");
-		this.buttonText2 = var5.translateKey("gui.no");
+		this.buttonText1 = StatCollector.translateToLocal("gui.yes");
+		this.buttonText2 = StatCollector.translateToLocal("gui.no");
 		this.oreId = par4;
 		this.meta = par5;
 	}

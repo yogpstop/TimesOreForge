@@ -67,11 +67,6 @@ public class GuiSlotBiomeList extends GuiSlot {
 	}
 
 	@Override
-	protected void drawBackground() {
-		this.parent.drawDefaultBackground();
-	}
-
-	@Override
 	protected void drawSlot(int var1, int var2, int var3, int var4, Tessellator var5) {
 		if (TimesOreForge.setting.get(this.ore).allBiome) return;
 		this.onoff[var1] = new GuiButton(var1, this.parent.width / 2 - 100, var3 + 2, 30, 10,
@@ -81,6 +76,11 @@ public class GuiSlotBiomeList extends GuiSlot {
 		this.onoff[var1].drawButton(Minecraft.getMinecraft(), 0, 0);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(biome.get(this.biomeid[var1]),
 				(this.parent.width - Minecraft.getMinecraft().fontRenderer.getStringWidth(biome.get(this.biomeid[var1]))) / 2, var3 + 1, 0xFFFFFF);
+	}
+
+	@Override
+	protected void drawBackground() {
+		this.parent.drawDefaultBackground();
 	}
 
 }
