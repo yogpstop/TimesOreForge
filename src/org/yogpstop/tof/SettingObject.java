@@ -125,7 +125,6 @@ public class SettingObject {
 				y = r.nextInt(this.height);
 			}
 			int z = cz * 16 + r.nextInt(16);
-			System.out.println(this.allBiome);
 			if (this.allBiome || this.biomes.contains(w.getBiomeGenForCoords(x, z).biomeID)) this.wGenM.generate(w, r, x, y, z);
 		}
 	}
