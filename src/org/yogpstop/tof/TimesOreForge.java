@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -31,10 +32,10 @@ public class TimesOreForge implements IWorldGenerator {
 	@SidedProxy(clientSide = "org.yogpstop.tof.ClientProxy", serverSide = "org.yogpstop.tof.CommonProxy")
 	public static CommonProxy proxy;
 
-	public static final ArrayList<SettingObject> setting = new ArrayList<SettingObject>();
+	public static final List<SettingObject> setting = new ArrayList<SettingObject>();
 	private static File settingF;
 
-	@Mod.PreInit
+	@Mod.EventHandler
 	public void preload(FMLPreInitializationEvent event) {
 		settingF = event.getSuggestedConfigurationFile();
 		setting.clear();
@@ -53,7 +54,7 @@ public class TimesOreForge implements IWorldGenerator {
 		GameRegistry.registerWorldGenerator(this);
 	}
 
-	@Mod.PostInit
+	@Mod.EventHandler
 	public static void postInit(FMLPostInitializationEvent event) {
 		proxy.setKeyHandler();
 	}

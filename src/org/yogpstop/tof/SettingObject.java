@@ -3,6 +3,7 @@ package org.yogpstop.tof;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -46,7 +47,7 @@ public class SettingObject {
 	public byte isSetMultiple = 1;
 	public short baseBlock = (short) net.minecraft.block.Block.oreCoal.blockID;
 
-	public final ArrayList<Integer> biomes = new ArrayList<Integer>();
+	public final List<Integer> biomes = new ArrayList<Integer>();
 
 	public SettingObject(short ABlockID, int AMeta) {
 		this.blockID = ABlockID;
