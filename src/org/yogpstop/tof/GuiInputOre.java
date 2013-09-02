@@ -21,6 +21,11 @@ public class GuiInputOre extends GuiScreen {
 	}
 
 	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
+	}
+
+	@Override
 	public void actionPerformed(GuiButton par1) {
 		switch (par1.id) {
 		case -1:
@@ -63,6 +68,9 @@ public class GuiInputOre extends GuiScreen {
 	public void updateScreen() {
 		this.meta.updateCursorCounter();
 		this.blockid.updateCursorCounter();
+		if (!this.mc.thePlayer.isEntityAlive() || this.mc.thePlayer.isDead) {
+			this.mc.thePlayer.closeScreen();
+		}
 	}
 
 	@Override
@@ -72,12 +80,14 @@ public class GuiInputOre extends GuiScreen {
 		} else if (this.meta.isFocused()) {
 			this.meta.textboxKeyTyped(par1, par2);
 		}
+		if (par2 == 1 || par1 == this.mc.gameSettings.keyBindInventory.keyCode) {
+			this.mc.thePlayer.closeScreen();
+		}
 	}
 
 	@Override
 	protected void mouseClicked(int par1, int par2, int par3) {
 		super.mouseClicked(par1, par2, par3);
-
 		this.blockid.mouseClicked(par1, par2, par3);
 		this.meta.mouseClicked(par1, par2, par3);
 	}
