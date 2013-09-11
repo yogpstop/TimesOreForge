@@ -55,7 +55,7 @@ public class TimesOreForge implements IWorldGenerator {
 	}
 
 	@Mod.EventHandler
-	public static void postInit(FMLPostInitializationEvent event) {
+	public void postInit(FMLPostInitializationEvent event) {
 		proxy.setKeyHandler();
 	}
 
