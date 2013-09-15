@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,6 +15,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.biome.BiomeGenBase;
 
+@SideOnly(Side.CLIENT)
 public class GuiSlotBiomeList extends GuiSlot {
 	private static final TreeMap<Integer, String> biome = new TreeMap<Integer, String>();
 	static {

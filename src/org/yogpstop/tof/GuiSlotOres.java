@@ -1,16 +1,20 @@
 package org.yogpstop.tof;
 
+import static org.yogpstop.tof.TimesOreForge.getname;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
 
+@SideOnly(Side.CLIENT)
 public class GuiSlotOres extends GuiSlot {
-	private GuiSetting parent;
+	private GuiScreen parent;
 	public int currentore = 0;
 
-	public GuiSlotOres(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6, GuiSetting parents) {
+	public GuiSlotOres(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6, GuiScreen parents) {
 		super(par1Minecraft, par2, par3, par4, par5, par6);
-
 		this.parent = parents;
 	}
 
@@ -36,7 +40,7 @@ public class GuiSlotOres extends GuiSlot {
 
 	@Override
 	protected void drawSlot(int var1, int var2, int var3, int var4, Tessellator var5) {
-		String name = TimesOreForge.getname(TimesOreForge.setting.get(var1).blockID, TimesOreForge.setting.get(var1).meta);
+		String name = getname(TimesOreForge.setting.get(var1).blockID, TimesOreForge.setting.get(var1).meta);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(name,
 				(this.parent.width * 3 / 5 - Minecraft.getMinecraft().fontRenderer.getStringWidth(name)) / 2, var3 + 1, 0xFFFFFF);
 	}

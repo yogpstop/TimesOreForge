@@ -129,4 +129,17 @@ public class SettingObject {
 			if (this.allBiome || this.biomes.contains(w.getBiomeGenForCoords(x, z).biomeID)) this.wGenM.generate(w, r, x, y, z);
 		}
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof SettingObject)) return false;
+		SettingObject s = (SettingObject) o;
+		if (s.blockID == this.blockID && s.meta == this.meta) return true;
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.blockID | (this.meta << 16);
+	}
 }

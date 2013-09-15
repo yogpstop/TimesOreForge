@@ -1,5 +1,7 @@
 package org.yogpstop.tof;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -7,6 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.biome.BiomeGenBase;
 
+@SideOnly(Side.CLIENT)
 public class GuiOre extends GuiScreen {
 	public int ore;
 	private GuiButton maxLumpsPerChunk;

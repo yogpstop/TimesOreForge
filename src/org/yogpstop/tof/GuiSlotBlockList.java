@@ -1,67 +1,69 @@
 package org.yogpstop.tof;
 
+import static org.yogpstop.tof.TimesOreForge.getname;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+@SideOnly(Side.CLIENT)
 public class GuiSlotBlockList extends GuiSlot {
-	private static final List<ItemStack> blocklist = new ArrayList<ItemStack>();
-	private GuiSelectBlock parent;
+	private static final List<ItemStack> blocklist_s = new ArrayList<ItemStack>();
+	private final List<ItemStack> blocklist = new ArrayList<ItemStack>(blocklist_s);
+	private GuiScreen parent;
 	public short currentblockid;
 	public int currentmeta;
 
 	static {
 		for (int i = 0; i < 4096; i++) {
 			if (Block.blocksList[i] != null) {
-				if (Item.itemsList[i] != null) {
-					Block.blocksList[i].getSubBlocks(i, null, blocklist);
-				} else {
-					Block.blocksList[i].getSubBlocks(i, null, blocklist);
-				}
+				Block.blocksList[i].getSubBlocks(i, null, blocklist_s);
 			}
 		}
-		for (int i = 0; i < blocklist.size(); i++) {
-			if (blocklist.get(i).itemID == Block.stone.blockID) {
-				blocklist.remove(i);
+	}
+
+	public GuiSlotBlockList(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6, GuiScreen parents) {
+		super(par1Minecraft, par2, par3, par4, par5, par6);
+		for (int i = 0; i < this.blocklist.size(); i++) {
+			if (this.blocklist.get(i).itemID == Block.stone.blockID && this.blocklist.get(i).getItemDamage() == 0) {
+				this.blocklist.remove(i);
 				i--;
 				continue;
 			}
 			for (int j = 0; j < TimesOreForge.setting.size(); j++) {
-				if (blocklist.get(i).itemID == TimesOreForge.setting.get(j).blockID && blocklist.get(i).getItemDamage() == TimesOreForge.setting.get(j).meta) {
-					blocklist.remove(i);
+				if (this.blocklist.get(i).itemID == TimesOreForge.setting.get(j).blockID
+						&& this.blocklist.get(i).getItemDamage() == TimesOreForge.setting.get(j).meta) {
+					this.blocklist.remove(i);
 					i--;
 					continue;
 				}
 			}
 		}
-	}
-
-	public GuiSlotBlockList(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6, GuiSelectBlock parents) {
-		super(par1Minecraft, par2, par3, par4, par5, par6);
-
 		this.parent = parents;
 	}
 
 	@Override
 	protected int getSize() {
-		return blocklist.size();
+		return this.blocklist.size();
 	}
 
 	@Override
 	protected void elementClicked(int var1, boolean var2) {
-		this.currentblockid = (short) blocklist.get(var1).itemID;
-		this.currentmeta = blocklist.get(var1).getItemDamage();
+		this.currentblockid = (short) this.blocklist.get(var1).itemID;
+		this.currentmeta = this.blocklist.get(var1).getItemDamage();
 	}
 
 	@Override
 	protected boolean isSelected(int var1) {
-		return blocklist.get(var1).itemID == this.currentblockid && this.currentmeta == blocklist.get(var1).getItemDamage();
+		return this.blocklist.get(var1).itemID == this.currentblockid && this.currentmeta == this.blocklist.get(var1).getItemDamage();
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class GuiSlotBlockList extends GuiSlot {
 
 	@Override
 	protected void drawSlot(int var1, int var2, int var3, int var4, Tessellator var5) {
-		String name = TimesOreForge.getname((short) blocklist.get(var1).itemID, blocklist.get(var1).getItemDamage());
+		String name = getname((short) this.blocklist.get(var1).itemID, this.blocklist.get(var1).getItemDamage());
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(name, (this.parent.width - Minecraft.getMinecraft().fontRenderer.getStringWidth(name)) / 2,
 				var3 + 1, 0xFFFFFF);
 	}
